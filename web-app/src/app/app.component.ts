@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'web-app';
+  // 定义教师数组
+  teachers = new Array(
+    {
+      id: 1,
+      name: '张三',
+      username: 'zhangsan',
+      email: 'zhangsan@yunzhiclub.com',
+      sex: '男',
+    }
+  );
 }
