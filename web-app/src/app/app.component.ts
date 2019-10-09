@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
     const success = (response) => {
       console.log(response);
 
-      /*注意：这样写是不正确的，因为this的作用域是本function，而不是本class*/
+      /* 在箭头函数中，this的作用域是上下文（谁调用我，我的this就是谁） */
       this.teachers = response;
     };
 
