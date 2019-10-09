@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.ResultSet;
@@ -13,7 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController("Teacher")
+@RestController
+@RequestMapping("Teacher")
 public class TeacherController {
     private final static Logger logger = LoggerFactory.getLogger(TeacherController.class.getName());
 
@@ -59,5 +61,23 @@ public class TeacherController {
         /*使用query进行查询，并把查询的结果通过调用rowCallbackHandler.processRow()方法传递给rowCallbackHandler对象*/
         jdbcTemplate.query(query, rowCallbackHandler);
         return teachers;
+    }
+
+    @GetMapping("test")
+    public void test() {
+        /* 定义实现了RowCallbackHandler接口的对象*/
+        RowCallbackHandler rowCallbackHandler = new RowCallbackHandler() {
+
+            @Override
+            public void processRow(ResultSet resultSet) throws SQLException {
+                logger.info(resultSet.getString("name_ascii"));
+                logger.info(resultSet.getString("name_gb2312"));
+                logger.info(resultSet.getString("name_utf8"));
+                logger.info(resultSet.getString("name_utf8mb4"));
+            }
+        };
+        /*定义查询字符串*/
+        String queryString = "select * from test";
+        jdbcTemplate.query(queryString, rowCallbackHandler);
     }
 }
