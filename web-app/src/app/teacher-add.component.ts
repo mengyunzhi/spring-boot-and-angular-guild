@@ -8,6 +8,10 @@ import {Component, OnInit} from '@angular/core';
   templateUrl: './teacher-add.component.html'
 })
 export class TeacherAddComponent implements OnInit {
+  name: string;
+  username: string;
+  email: string;
+  sex: boolean;
   ngOnInit(): void {
   }
 }
