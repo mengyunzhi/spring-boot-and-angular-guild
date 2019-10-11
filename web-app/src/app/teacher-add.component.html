@@ -1,5 +1,5 @@
 <pre>{{name}} {{username}} {{email}} {{sex}}</pre>
-<form id="teacherAddForm">
+<form id="teacherAddForm" (ngSubmit)="onSubmit()">
   <div>
     <label for="name">姓名：</label>
     <input type="text" id="name" name="name" [(ngModel)]="name"/>
