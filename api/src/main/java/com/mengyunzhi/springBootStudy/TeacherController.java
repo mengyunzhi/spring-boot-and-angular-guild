@@ -5,10 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +19,6 @@ public class TeacherController {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
-
 
     @GetMapping
     @CrossOrigin("*")
@@ -65,21 +61,22 @@ public class TeacherController {
         return teachers;
     }
 
-    @GetMapping("test")
-    public void test() {
-        /* 定义实现了RowCallbackHandler接口的对象*/
-        RowCallbackHandler rowCallbackHandler = new RowCallbackHandler() {
-
-            @Override
-            public void processRow(ResultSet resultSet) throws SQLException {
-                logger.info(resultSet.getString("name_ascii"));
-                logger.info(resultSet.getString("name_gb2312"));
-                logger.info(resultSet.getString("name_utf8"));
-                logger.info(resultSet.getString("name_utf8mb4"));
-            }
-        };
-        /*定义查询字符串*/
-        String queryString = "select * from test";
-        jdbcTemplate.query(queryString, rowCallbackHandler);
+    /**
+     * 新增教师
+     * 1. 获取前台传入的教师对象
+     * 2. 拼接插入sql语句
+     * 3. 执行sql语句。
+     *
+     * @param teacher 教师
+     */
+    @PostMapping
+    @CrossOrigin("*")
+    public void save(@RequestBody Teacher teacher) {
+        String sql = String.format(
+                "insert into `teacher` (`name`, `username`, `email`, `sex`) values ('%s', '%s', '%s', %s)",
+                teacher.getName(), teacher.getUsername(), teacher.getEmail(), teacher.getSex().toString()
+        );
+        logger.info(sql);
+        jdbcTemplate.execute(sql);
     }
 }
