@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {AppComponent} from './app.component';
 
 /**
  * 教师添加组件
@@ -15,7 +16,7 @@ export class TeacherAddComponent implements OnInit {
   sex: boolean;
 
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private appComponent: AppComponent) {
   }
 
   ngOnInit(): void {
@@ -37,8 +38,9 @@ export class TeacherAddComponent implements OnInit {
     console.log(teacher);
 
     this.httpClient.post(url, teacher)
-      .subscribe(function() {
+      .subscribe(() => {
         console.log('添加成功');
+        this.appComponent.ngOnInit();
       }, (response) => {
         console.error('请求发生错误', response);
       });
