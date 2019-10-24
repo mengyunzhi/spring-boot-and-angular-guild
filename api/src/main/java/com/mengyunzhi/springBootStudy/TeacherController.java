@@ -20,7 +20,7 @@ public class TeacherController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @GetMapping
+    @GetMapping(params = {})
     @CrossOrigin("*")
     public List<Teacher> getAll() {
         /*初始化不固定大小的数组*/

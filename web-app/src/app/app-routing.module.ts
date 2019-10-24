@@ -10,7 +10,7 @@ const routes: Routes = [
     component: TeacherAddComponent
   },
   {
-    path: 'edit',
+    path: 'edit/:id',
     component: TeacherEditComponent
   }
 ];
