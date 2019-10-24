@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
   templateUrl: './teacher-edit.component.html'
 })
 export class TeacherEditComponent implements OnInit {
-  public teacher: any;
+  public teacher: any = {};
 
   constructor(private route: ActivatedRoute, private httpClient: HttpClient) {
   }
@@ -17,9 +17,16 @@ export class TeacherEditComponent implements OnInit {
     this.httpClient.get(url)
       .subscribe((data) => {
         this.teacher = data;
-      }, () =>  {
+      }, () => {
         console.log(`请求 ${url} 时发生错误`);
       });
+  }
+
+  /**
+   * 提交表单
+   */
+  onSubmit(): void {
+    console.log('submit');
   }
 
 }
