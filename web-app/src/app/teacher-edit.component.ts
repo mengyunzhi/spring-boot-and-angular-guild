@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {AppComponent} from './app.component';
 
@@ -10,7 +10,10 @@ export class TeacherEditComponent implements OnInit {
   public teacher: any = {};
   private url: string;
 
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient, private appComponent: AppComponent) {
+  constructor(private route: ActivatedRoute,
+              private httpClient: HttpClient,
+              private appComponent: AppComponent,
+              private router: Router) {
   }
 
   /**
@@ -25,6 +28,9 @@ export class TeacherEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(data => {
+      console.log(data);
+    });
     this.httpClient.get(this.getUrl())
       .subscribe((data) => {
         this.teacher = data;
@@ -41,11 +47,10 @@ export class TeacherEditComponent implements OnInit {
       .subscribe(() => {
           console.log('更新成功');
           this.appComponent.ngOnInit();
+          this.router.navigate(['/']);
         },
         () => {
           console.error(`更新数据时发生错误,url:${this.getUrl()}`);
         });
   }
-
-
 }

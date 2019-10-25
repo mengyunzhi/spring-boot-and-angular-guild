@@ -9,7 +9,7 @@
     <th>注册时间</th>
     <th>操作</th>
   </tr>
-  <tr *ngFor="let teacher of teachers" >
+  <tr *ngFor="let teacher of teachers">
     <td>{{teacher.id}}</td>
     <td>{{teacher.name}}</td>
     <td>{{teacher.username}}</td>
@@ -19,6 +19,6 @@
       <span *ngIf="!teacher.sex">男</span>
     </td>
     <td>{{teacher.createTime | date: 'yyyy-MM-dd'}}</td>
-    <td>删除</td>
+    <td><a [routerLink]="['/edit', teacher.id]">编辑</a> &nbsp;&nbsp;删除</td>
   </tr>
 </table>
