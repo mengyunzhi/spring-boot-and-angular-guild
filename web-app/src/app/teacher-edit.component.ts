@@ -8,18 +8,28 @@ import {AppComponent} from './app.component';
 })
 export class TeacherEditComponent implements OnInit {
   public teacher: any = {};
+  private url: string;
 
   constructor(private route: ActivatedRoute, private httpClient: HttpClient, private appComponent: AppComponent) {
   }
 
+  /**
+   * 获取与后台对接的URL
+   */
+  getUrl(): string {
+    if (this.url === undefined) {
+      const id = this.route.snapshot.paramMap.get('id');
+      this.url = 'http://localhost:8080/Teacher/' + id;
+    }
+    return this.url;
+  }
+
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    const url = 'http://localhost:8080/Teacher/' + id;
-    this.httpClient.get(url)
+    this.httpClient.get(this.getUrl())
       .subscribe((data) => {
         this.teacher = data;
       }, () => {
-        console.log(`请求 ${url} 时发生错误`);
+        console.log(`请求 ${this.getUrl()} 时发生错误`);
       });
   }
 
@@ -27,16 +37,15 @@ export class TeacherEditComponent implements OnInit {
    * 提交表单
    */
   onSubmit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    const url = 'http://localhost:8080/Teacher/' + id;
-    this.httpClient.put(url, this.teacher)
+    this.httpClient.put(this.getUrl(), this.teacher)
       .subscribe(() => {
           console.log('更新成功');
           this.appComponent.ngOnInit();
         },
         () => {
-          console.error(`更新数据时发生错误,url:${url}`);
+          console.error(`更新数据时发生错误,url:${this.getUrl()}`);
         });
   }
+
 
 }
