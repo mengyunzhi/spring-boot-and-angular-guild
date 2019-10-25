@@ -71,6 +71,7 @@ public class TeacherController {
      * 3 在代码输写时，我们更注重的是业务逻辑层面的交流而非coding方法的交流。
      * 如果我们认为方法中的代码的确是需要注释的（比如一些新的方法、新的思想的引入，我们想其它的成员能够快速的学习到该技巧）
      * 那么应该该代码段抽离出来，变成一个新的方法，然后在该方法上加入注释。
+     *
      * @param id 教师ID
      * @return
      */
@@ -99,6 +100,7 @@ public class TeacherController {
         return teacher;
     }
 
+
     /**
      * 新增教师
      * 1. 获取前台传入的教师对象
@@ -116,5 +118,21 @@ public class TeacherController {
         );
         logger.info(sql);
         jdbcTemplate.execute(sql);
+    }
+
+    /**
+     * 使用传入的数据更新某个教师的数据
+     *
+     * @param id 教师ID
+     * @param newTeacher 更新教师
+     */
+    @PutMapping("{id}")
+    @CrossOrigin("*")
+    public void update(@PathVariable Long id, @RequestBody Teacher newTeacher) {
+        String sql = String.format(
+                "update `teacher` set `name` = '%s'  , `username` = '%s' , `email` = '%s' , `sex` = %s where `id` = %s",
+                newTeacher.getName(), newTeacher.getUsername(), newTeacher.getEmail(), newTeacher.getSex().toString(), id
+        );
+        this.jdbcTemplate.update(sql);
     }
 }
