@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {AppComponent} from './app.component';
+import {AppComponent} from '../app.component';
 
 /**
  * 教师添加组件
