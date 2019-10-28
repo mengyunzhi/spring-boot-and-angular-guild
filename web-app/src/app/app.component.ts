@@ -36,4 +36,19 @@ export class AppComponent implements OnInit {
       });
   }
 
+  /**
+   * 点击删除按钮时删除对应的教师
+   * @param teacher 要删除的教师
+   */
+  onDelete(teacher: {id: string}): void {
+    const url = 'http://localhost:8080/Teacher/' + teacher.id;
+    this.httpClient.delete(url)
+      .subscribe(() => {
+        console.log('删除成功');
+        this.ngOnInit();
+      }, () => {
+        console.log('删除失败');
+      });
+  }
+
 }
