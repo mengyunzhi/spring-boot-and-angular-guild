@@ -20,6 +20,13 @@ public class TeacherController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @DeleteMapping("{id}")
+    @CrossOrigin("*")
+    public void delete(@PathVariable Long id) {
+        String sql = String.format( "delete from `teacher` where id = %s", id);
+        this.jdbcTemplate.update(sql);
+    }
+
     @GetMapping
     @CrossOrigin("*")
     public List<Teacher> getAll() {
