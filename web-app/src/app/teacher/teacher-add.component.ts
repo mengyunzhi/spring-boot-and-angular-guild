@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AppComponent} from '../app.component';
+import {ActivatedRoute, Router} from '@angular/router';
 
 /**
  * 教师添加组件
@@ -13,12 +14,26 @@ export class TeacherAddComponent implements OnInit {
   username: string;
   email: string;
   sex: boolean;
+  message = '';
 
 
-  constructor(private httpClient: HttpClient, private appComponent: AppComponent) {
+  constructor(private httpClient: HttpClient,
+              private appComponent: AppComponent,
+              private router: Router) {
   }
 
   ngOnInit(): void {
+  }
+
+  /**
+   * 显示错误信息。1.5秒后关闭显示
+   * @param message 错误信息
+   */
+  public showMessage(message = '发生错误'): void {
+    this.message = message;
+    setTimeout(() => {
+      this.message = '';
+    }, 1500);
   }
 
   /**
@@ -40,7 +55,9 @@ export class TeacherAddComponent implements OnInit {
       .subscribe(() => {
         console.log('添加成功');
         this.appComponent.ngOnInit();
+        this.router.navigate(['./']);
       }, (response) => {
+        this.showMessage('请求发生错误');
         console.error('请求发生错误', response);
       });
   }
