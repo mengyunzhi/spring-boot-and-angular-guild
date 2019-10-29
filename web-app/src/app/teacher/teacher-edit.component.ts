@@ -52,7 +52,7 @@ export class TeacherEditComponent implements OnInit {
       .subscribe(() => {
           console.log('更新成功');
           this.appComponent.ngOnInit();
-          this.router.navigate(['/']);
+          this.router.navigate(['./../../'], {relativeTo: this.route});
         },
         () => {
           console.error(`更新数据时发生错误,url:${this.getUrl()}`);

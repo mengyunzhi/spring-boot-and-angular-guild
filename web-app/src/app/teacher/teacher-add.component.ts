@@ -19,7 +19,8 @@ export class TeacherAddComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               private appComponent: AppComponent,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -55,7 +56,7 @@ export class TeacherAddComponent implements OnInit {
       .subscribe(() => {
         console.log('添加成功');
         this.appComponent.ngOnInit();
-        this.router.navigate(['./']);
+        this.router.navigate(['./../'], {relativeTo: this.route});
       }, (response) => {
         this.showMessage('请求发生错误');
         console.error('请求发生错误', response);

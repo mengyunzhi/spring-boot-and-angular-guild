@@ -7,15 +7,15 @@ import {TeacherIndexComponent} from './teacher/teacher-index.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'teacher',
     component: TeacherIndexComponent
   },
   {
-    path: 'add',
+    path: 'teacher/add',
     component: TeacherAddComponent
   },
   {
-    path: 'edit/:id',
+    path: 'teacher/edit/:id',
     component: TeacherEditComponent
   }
 ];
