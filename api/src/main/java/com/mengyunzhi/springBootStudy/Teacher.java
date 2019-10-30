@@ -1,9 +1,17 @@
 package com.mengyunzhi.springBootStudy;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * 教师模型，用于更方便的存储查表后返回的数据
  */
+@Entity
 public class Teacher {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Boolean sex;
@@ -11,6 +19,9 @@ public class Teacher {
     private String email;
     private Long createTime;
     private Long updateTime;
+
+    public Teacher() {
+    }
 
     public Long getId() {
         return id;
