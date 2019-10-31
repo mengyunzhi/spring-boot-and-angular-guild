@@ -1,1 +1,16 @@
-<p>index works!</p>
+<form (ngSubmit)="onQuery()">
+  <label>名称：<input type="text" name="params.name"/></label>
+  <button>查询</button>
+</form>
+<table>
+  <tr>
+    <th>序号</th>
+    <th>名称</th>
+    <th>辅导员</th>
+  </tr>
+  <tr *ngFor="let klass of klasses; index as i">
+    <td>{{i + 1}}</td>
+    <td>{{klass.name}}</td>
+    <td>{{klass.teacher.name}}</td>
+  </tr>
+</table>
