@@ -69,4 +69,27 @@ fdescribe('IndexComponent', () => {
       expect(component.params.name).toBe('test1');
     });
   });
+
+  fit('测试查询按钮', () => {
+    expect(component).toBeTruthy();
+    const name = 'hello';
+    component.params.name = name;
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const queryButton: HTMLButtonElement = fixture.debugElement.query(By.css('button')).nativeElement;
+      queryButton.click();
+      const req = httpTestingController.expectOne(`http://localhost:8080/Klass?name=${name}`);
+      req.flush([
+        new Klass(1, '计科1901班', new Teacher(1, 'zhagnsan', '张三'))
+      ]);
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        const debugElement: DebugElement = fixture.debugElement;
+        const tableElement = debugElement.query(By.css('table'));
+        const nameInput: HTMLTableElement = tableElement.nativeElement;
+        expect(nameInput.rows.length).toBe(2);
+      });
+    });
+  });
+
 });
