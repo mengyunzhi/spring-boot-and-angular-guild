@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Klass} from '../../norm/entity/Klass';
-import {Teacher} from '../../norm/entity/Teacher';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-index',
@@ -9,27 +8,34 @@ import {Teacher} from '../../norm/entity/Teacher';
 })
 export class IndexComponent implements OnInit {
   private message = '';
+  private url = 'http://localhost:8080/Klass';
   /*查询参数*/
   params = {
     name: ''
   };
-  /* 班级 */
-  klasses = [
-    new Klass(1, '计科1901班', new Teacher(1, 'zhagnsan', '张三')),
-    new Klass(2, '软件1902班', new Teacher(2, 'lisi', '李四'))
-  ];
 
-  constructor() {
+  /* 班级 */
+  klasses;
+
+  constructor(private httpClient: HttpClient) {
   }
 
   ngOnInit() {
+    this.onQuery();
   }
 
   /**
    * 用户点击查询按钮后触发
    */
   onQuery(): void {
-    console.log('综合查询');
+    console.log('执行onQuery');
+    this.httpClient.get(this.url, {params: this.params})
+      .subscribe(data => {
+        console.log('成功执行请求', data);
+        this.klasses = data;
+      }, () => {
+        console.log(`请求${this.url}发生错误`);
+      });
   }
 
 }
