@@ -1,5 +1,5 @@
 <form (ngSubmit)="onQuery()">
-  <label>名称：<input type="text" name="params.name"/></label>
+  <label>名称：<input type="text" name="name" [(ngModel)]="params.name"/></label>
   <button>查询</button>
 </form>
 <table>
