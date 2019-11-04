@@ -1,4 +1,4 @@
-package com.mengyunzhi.springBootStudy;
+package com.mengyunzhi.springBootStudy.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

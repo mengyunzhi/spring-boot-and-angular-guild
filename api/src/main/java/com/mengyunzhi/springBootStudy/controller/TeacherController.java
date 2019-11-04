@@ -1,5 +1,6 @@
-package com.mengyunzhi.springBootStudy;
+package com.mengyunzhi.springBootStudy.controller;
 
+import com.mengyunzhi.springBootStudy.entity.Teacher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

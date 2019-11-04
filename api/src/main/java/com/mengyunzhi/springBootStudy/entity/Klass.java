@@ -1,7 +1,5 @@
 package com.mengyunzhi.springBootStudy.entity;
 
-import com.mengyunzhi.springBootStudy.Teacher;
-
 import javax.persistence.*;
 
 @Entity
