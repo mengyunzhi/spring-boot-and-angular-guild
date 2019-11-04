@@ -80,14 +80,14 @@ fdescribe('IndexComponent', () => {
       queryButton.click();
       const req = httpTestingController.expectOne(`http://localhost:8080/Klass?name=${name}`);
       req.flush([
-        new Klass(1, '计科1901班', new Teacher(1, 'zhagnsan', '张三'))
+        new Klass(1, 'hello班', new Teacher(1, 'zhagnsan', '张三'))
       ]);
       fixture.detectChanges();
       fixture.whenStable().then(() => {
         const debugElement: DebugElement = fixture.debugElement;
         const tableElement = debugElement.query(By.css('table'));
-        const nameInput: HTMLTableElement = tableElement.nativeElement;
-        expect(nameInput.rows.length).toBe(2);
+        const tableHtml: HTMLTableElement = tableElement.nativeElement;
+        expect(tableHtml.rows.length).toBe(2);
       });
     });
   });
