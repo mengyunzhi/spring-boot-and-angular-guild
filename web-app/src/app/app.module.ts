@@ -8,6 +8,7 @@ import {TeacherAddComponent} from './teacher/teacher-add.component';
 import {FormsModule} from '@angular/forms';
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {TeacherIndexComponent} from './teacher/teacher-index.component';
+import {KlassModule} from './klass/klass.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {TeacherIndexComponent} from './teacher/teacher-index.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    KlassModule
   ],
   providers: [],
   bootstrap: [AppComponent]
