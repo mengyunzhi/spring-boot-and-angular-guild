@@ -8,7 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {DebugElement} from '@angular/core';
 
-fdescribe('IndexComponent', () => {
+describe('IndexComponent', () => {
   let component: IndexComponent;
   let fixture: ComponentFixture<IndexComponent>;
   let httpTestingController: HttpTestingController;
@@ -70,7 +70,7 @@ fdescribe('IndexComponent', () => {
     });
   });
 
-  fit('测试查询按钮', () => {
+  it('测试查询按钮', () => {
     expect(component).toBeTruthy();
     const name = 'hello';
     component.params.name = name;
