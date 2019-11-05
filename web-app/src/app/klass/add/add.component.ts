@@ -3,6 +3,7 @@ import {FormControl} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Teacher} from '../../norm/entity/Teacher';
 import {Klass} from '../../norm/entity/Klass';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-add',
@@ -17,7 +18,9 @@ export class AddComponent implements OnInit {
   /*当该值不为空时，可以显示在前台并提示用户*/
   message: string;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -33,6 +36,7 @@ export class AddComponent implements OnInit {
     this.httpClient.post(url, klass)
       .subscribe(() => {
         console.log('保存成功');
+        this.router.navigate([''], {relativeTo: this.route});
       }, (response) => {
         console.log(`向${url}发起的post请求发生错误` + response);
         this.setMessage(AddComponent.errorMessage);
