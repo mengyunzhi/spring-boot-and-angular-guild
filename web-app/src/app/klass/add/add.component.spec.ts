@@ -100,7 +100,7 @@ describe('Klass/AddComponent', () => {
       expect(klass.name).toEqual('test3');
       expect(klass.teacher.id).toEqual(3);
 
-      req.flush(null, {status: 201, statusText: 'created'});
+      req.flush(null, {status: 201, statusText: 'Accepted'});
     });
 
   });
