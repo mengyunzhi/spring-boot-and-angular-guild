@@ -4,17 +4,21 @@ import {AddComponent} from './add.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {Klass} from '../../norm/entity/Klass';
 
 describe('Klass/AddComponent', () => {
   let component: AddComponent;
   let fixture: ComponentFixture<AddComponent>;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AddComponent],
       imports: [
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        HttpClientTestingModule
       ]
     })
       .compileComponents();
@@ -32,7 +36,7 @@ describe('Klass/AddComponent', () => {
    * 重新渲染V层后，使用CSS选择器来获取元素
    * 获取元素的值并断言
    */
-  fit('测试C层向V层数据绑定', () => {
+  it('测试C层向V层数据绑定', () => {
     expect(component).toBeTruthy();
     component.name.setValue('test');
     component.teacherId.setValue(1);
@@ -71,5 +75,31 @@ describe('Klass/AddComponent', () => {
       teacherIdInput.dispatchEvent(new Event('input'));
       expect(component.teacherId.value).toBe(2);
     });
+  });
+
+  /**
+   * 设置表单数据
+   * 点击按钮发起请求
+   * 断言：请求地址、请求方法、发送的数据
+   */
+  fit('保存按钮点击后，提交相应的http请求', () => {
+    httpTestingController = TestBed.get(HttpTestingController);
+    expect(component).toBeTruthy();
+    component.name.setValue('test3');
+    component.teacherId.setValue('3');
+    fixture.whenStable().then(() => {
+      const debugElement: DebugElement = fixture.debugElement;
+      const submitButtonElement = debugElement.query(By.css('button'));
+      const submitButton: HTMLButtonElement = submitButtonElement.nativeElement;
+      submitButton.click();
+
+      const req = httpTestingController.expectOne('http://localhost:8080/Klass');
+      expect(req.request.method).toEqual('POST');
+      const klass: Klass = req.request.body.valueOf();
+      console.log(klass);
+      expect(klass.name).toEqual('test3');
+      expect(klass.teacher.id).toEqual(3);
+    });
+
   });
 });
