@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-add',
@@ -6,11 +7,15 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./add.component.sass']
 })
 export class AddComponent implements OnInit {
+  name: FormControl;
+  teacherId: FormControl;
 
   constructor() {
   }
 
   ngOnInit() {
+    this.name = new FormControl('');
+    this.teacherId = new FormControl();
   }
 
   onSubmit(): void {
