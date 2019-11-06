@@ -82,7 +82,7 @@ describe('Klass/AddComponent', () => {
    * 点击按钮发起请求
    * 断言：请求地址、请求方法、发送的数据
    */
-  fit('保存按钮点击后，提交相应的http请求', () => {
+  it('保存按钮点击后，提交相应的http请求', () => {
     httpTestingController = TestBed.get(HttpTestingController);
     expect(component).toBeTruthy();
     component.name.setValue('test3');

@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AddComponent} from './add/add.component';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
+import { EditComponent } from './edit/edit.component';
 
 /*定义路由*/
 const routes: Routes = [
@@ -20,7 +21,7 @@ const routes: Routes = [
  * 班级模块
  */
 @NgModule({
-  declarations: [IndexComponent, AddComponent],
+  declarations: [IndexComponent, AddComponent, EditComponent],
   imports: [
     CommonModule,
     FormsModule,

@@ -1,0 +1,6 @@
+<h3>编辑班级</h3>
+<form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+  <label for="name">名称：<input id="name" type="text" formControlName="name"/></label>
+  <label for="teacherId">教师ID：<input type="number" id="teacherId" formControlName="teacherId"></label>
+  <button>更新</button>
+</form>
