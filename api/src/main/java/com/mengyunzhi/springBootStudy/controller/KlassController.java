@@ -21,6 +21,12 @@ public class KlassController {
     @Autowired
     KlassRepository klassRepository;
 
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Klass get(@PathVariable Long id) {
+        return this.klassRepository.findById(id).get();
+    }
+
     @GetMapping
     public List<Klass> getAll(@RequestParam String name) {
         return this.klassRepository.findAllByNameContains(name);
@@ -30,5 +36,22 @@ public class KlassController {
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody Klass klass) {
         klassRepository.save(klass);
+    }
+
+    /**
+     * 更新班级
+     * 获取数据库中的老数据
+     * 使用传入的新数据对老数据的更新字段赋值
+     * 将更新后的老数据重新保存在数据表中
+     * @param id 要更新的班级ID
+     * @param klass 新班级数据
+     */
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable Long id, @RequestBody Klass klass) {
+        Klass oldKlass = klassRepository.findById(id).get();
+        oldKlass.setName(klass.getName());
+        oldKlass.setTeacher(klass.getTeacher());
+        klassRepository.save(oldKlass);
     }
 }
