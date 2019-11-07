@@ -41,7 +41,7 @@ describe('klass EditComponent', () => {
    * 断言发起了HTTP请求
    * 断言请求的方法为PUT
    */
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
     let route: ActivatedRouteStub;
     route = TestBed.get(ActivatedRoute);
@@ -66,15 +66,6 @@ describe('klass EditComponent', () => {
       expect(FormTest.getInputValueByFixtureAndCss(fixture, '#teacherId')).toEqual('1');
     });
   };
-
-  /**
-   * 测试数据提交
-   * @param id 请求的班级ID
-   */
-  const testSubmit = (id: number) => {
-
-  };
-
 
 });
 
