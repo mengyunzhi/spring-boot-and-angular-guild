@@ -1,7 +1,7 @@
 package com.mengyunzhi.springBootStudy.controller;
 
 import com.mengyunzhi.springBootStudy.entity.Klass;
-import com.mengyunzhi.springBootStudy.repository.KlassRepository;
+import com.mengyunzhi.springBootStudy.service.KlassService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,39 +19,34 @@ public class KlassController {
     private static final Logger logger = LoggerFactory.getLogger(KlassController.class);
 
     @Autowired
-    KlassRepository klassRepository;
+    KlassService klassService;
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public Klass get(@PathVariable Long id) {
-        return this.klassRepository.findById(id).get();
+        return this.klassService.getById(id);
     }
 
     @GetMapping
     public List<Klass> getAll(@RequestParam String name) {
-        return this.klassRepository.findAllByNameContains(name);
+        return this.klassService.getAll(name);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody Klass klass) {
-        klassRepository.save(klass);
+        this.klassService.save(klass);
     }
 
     /**
      * 更新班级
-     * 获取数据库中的老数据
-     * 使用传入的新数据对老数据的更新字段赋值
-     * 将更新后的老数据重新保存在数据表中
-     * @param id 要更新的班级ID
+     *
+     * @param id    要更新的班级ID
      * @param klass 新班级数据
      */
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Long id, @RequestBody Klass klass) {
-        Klass oldKlass = klassRepository.findById(id).get();
-        oldKlass.setName(klass.getName());
-        oldKlass.setTeacher(klass.getTeacher());
-        klassRepository.save(oldKlass);
+        this.klassService.update(id, klass);
     }
 }
