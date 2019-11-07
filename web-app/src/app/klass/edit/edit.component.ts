@@ -40,6 +40,7 @@ export class EditComponent implements OnInit {
       teacherId: new FormControl()
     });
     this.route.params.subscribe((param: { id: number }) => {
+      console.log(param);
       this.setUrlById(param.id);
       this.loadData();
     });
