@@ -4,7 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AddComponent} from './add/add.component';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
-import { EditComponent } from './edit/edit.component';
+import {EditComponent} from './edit/edit.component';
 
 /*定义路由*/
 const routes: Routes = [
@@ -14,6 +14,9 @@ const routes: Routes = [
   }, {
     path: 'add',
     component: AddComponent
+  }, {
+    path: 'edit/:id',
+    component: EditComponent
   }
 ];
 
@@ -27,6 +30,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes)
+  ], exports: [
+    RouterModule
   ]
 })
 export class KlassModule {
