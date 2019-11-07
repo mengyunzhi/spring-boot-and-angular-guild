@@ -26,4 +26,49 @@ export class FormTest {
     return nameInput.value;
   }
 
+  /**
+   * 设置input的值
+   * @param fixture 夹具
+   * @param cssSelector CSS选择器
+   * @param value 要设置的值
+   * @return 成功true 失败false
+   */
+  static setInputValue(fixture: ComponentFixture<any>, cssSelector: string, value: string): boolean {
+    const selectorElement = this.getSelectorElement(fixture, cssSelector);
+    if (isNull(selectorElement)) {
+      return false;
+    }
+    const htmlInputElement: HTMLInputElement = selectorElement.nativeElement;
+    htmlInputElement.value = value;
+    htmlInputElement.dispatchEvent(new Event('input'));
+    return true;
+  }
+
+
+  /**
+   * 获取button按钮，并点击
+   * @param fixture 夹具
+   * @param cssSelector CSS选择器
+   * @return 成功true 失败false
+   */
+  static clickButton(fixture: ComponentFixture<any>, cssSelector: string): boolean {
+    const selectorElement = this.getSelectorElement(fixture, cssSelector);
+    if (isNull(selectorElement)) {
+      return false;
+    }
+    const htmlButtonElement: HTMLButtonElement = selectorElement.nativeElement;
+    htmlButtonElement.click();
+    return true;
+  }
+
+  /**
+   * 根据CSS选择器来获取夹具中Debug元素
+   * @param fixture 夹具
+   * @param cssSelector CSS选择器
+   * @return DebugElement
+   */
+  static getSelectorElement(fixture: ComponentFixture<any>, cssSelector: string): DebugElement {
+    const debugElement: DebugElement = fixture.debugElement;
+    return debugElement.query(By.css(cssSelector));
+  }
 }
