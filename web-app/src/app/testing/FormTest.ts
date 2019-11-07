@@ -14,6 +14,7 @@ export class FormTest {
    * 最后将获取的元素转换为HTMLInput元素并返回该元素的值
    * @param fixture 组件夹具
    * @param cssSelector CSS选择器
+   * @return string input的值，如果未找到该元素返回null
    */
   static getInputValueByFixtureAndCss(fixture: ComponentFixture<any>, cssSelector: string): string {
     const debugElement: DebugElement = fixture.debugElement;
@@ -24,4 +25,5 @@ export class FormTest {
     const nameInput: HTMLInputElement = nameElement.nativeElement;
     return nameInput.value;
   }
+
 }
