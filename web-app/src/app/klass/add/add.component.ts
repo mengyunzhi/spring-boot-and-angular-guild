@@ -44,6 +44,14 @@ export class AddComponent implements OnInit {
   }
 
   /**
+   * 当选择某个教师时触发
+   * @param {Teacher} teacher 教师
+   */
+  onTeacherSelected(teacher: Teacher) {
+    console.log(teacher);
+  }
+
+  /**
    * 使用传的值来设置message，并在1.5秒后将消息置空
    * @param message 消息
    */

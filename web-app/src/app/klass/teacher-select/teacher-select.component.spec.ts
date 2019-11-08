@@ -31,13 +31,8 @@ describe('TeacherSelectComponent', () => {
   });
 
   /*断言发请了后台请求，模拟返回数据后，断言V层的select个数为2*/
-  fit('获取教师列表后选择教师', () => {
-    expect(component).toBeTruthy();
-    const httpTestingController: HttpTestingController = TestBed.get(HttpTestingController);
-    const req = httpTestingController.expectOne('http://localhost:8080/Teacher');
-    expect(req.request.method).toEqual('GET');
-    req.flush(teachers);
-    fixture.detectChanges();
+  it('获取教师列表后选择教师', () => {
+    expectInit();
 
     const htmlSelectElement: HTMLSelectElement = fixture.debugElement.query(By.css('#teacherSelect')).nativeElement;
     expect(htmlSelectElement.length).toBe(2);
@@ -56,5 +51,38 @@ describe('TeacherSelectComponent', () => {
       console.log(htmlOptionElement.text);
       expect(htmlOptionElement.text).toEqual(teachers[i].name);
     }
+  };
+
+
+  /**
+   * 1. 模拟返回数据给教师列表
+   * 2. 观察弹射器
+   * 3. 模拟点击第0个option
+   * 4. 断言观察到的数据是教师列表的第一个教师
+   */
+  fit('测试组件弹射器', () => {
+    expectInit();
+
+    component.selected.subscribe((teacher: Teacher) => {
+      console.log('data emit', teacher);
+      expect(teacher.name).toEqual(teachers[0].name);
+    });
+
+    const htmlSelectElement: HTMLSelectElement = fixture.debugElement.query(By.css('#teacherSelect')).nativeElement;
+    htmlSelectElement.value = htmlSelectElement.options[0].value;
+    htmlSelectElement.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+  });
+
+  /**
+   * 断言组件进行了初始化
+   * 访问了正确的后台地址
+   */
+  const expectInit = () => {
+    const httpTestingController: HttpTestingController = TestBed.get(HttpTestingController);
+    const req = httpTestingController.expectOne('http://localhost:8080/Teacher');
+    expect(req.request.method).toEqual('GET');
+    req.flush(teachers);
+    fixture.detectChanges();
   };
 });

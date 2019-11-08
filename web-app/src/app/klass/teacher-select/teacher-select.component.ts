@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Teacher} from '../../norm/entity/Teacher';
 import {FormControl} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
@@ -13,6 +13,8 @@ export class TeacherSelectComponent implements OnInit {
   teachers: Array<Teacher>;
 
   teacherSelect: FormControl;
+
+  @Output() selected = new EventEmitter<Teacher>();
 
   constructor(private httpClient: HttpClient) {
   }
@@ -29,4 +31,8 @@ export class TeacherSelectComponent implements OnInit {
       });
   }
 
+  onChange() {
+    console.log(this.teacherSelect.value);
+    this.selected.emit(this.teacherSelect.value);
+  }
 }
