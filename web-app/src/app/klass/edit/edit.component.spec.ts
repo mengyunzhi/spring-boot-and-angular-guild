@@ -45,7 +45,7 @@ describe('klass EditComponent', () => {
    * 断言发起了HTTP请求
    * 断言请求的方法为PUT
    */
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
     let route: ActivatedRouteStub;
     route = TestBed.get(ActivatedRoute);
