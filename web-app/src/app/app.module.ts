@@ -22,7 +22,6 @@ import {KlassModule} from './klass/klass.module';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    KlassModule
   ],
   providers: [],
   bootstrap: [AppComponent]
