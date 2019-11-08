@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Teacher} from '../../norm/entity/Teacher';
 import {FormControl} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-teacher-select',
@@ -13,7 +14,7 @@ export class TeacherSelectComponent implements OnInit {
 
   teacherSelect: FormControl;
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
   }
 
   /**
@@ -21,8 +22,11 @@ export class TeacherSelectComponent implements OnInit {
    */
   ngOnInit() {
     this.teacherSelect = new FormControl();
-    this.teachers = new Array(new Teacher(1, 'panjie', '潘杰'),
-      new Teacher(2, 'zhangxishuo', '张喜硕'));
+    const url = 'http://localhost:8080/Teacher';
+    this.httpClient.get(url)
+      .subscribe((teachers: Array<Teacher>) => {
+        this.teachers = teachers;
+      });
   }
 
 }
