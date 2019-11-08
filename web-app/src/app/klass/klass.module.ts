@@ -30,8 +30,6 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes)
-  ], exports: [
-    RouterModule
   ]
 })
 export class KlassModule {

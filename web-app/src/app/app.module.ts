@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {TeacherIndexComponent} from './teacher/teacher-index.component';
 import {KlassModule} from './klass/klass.module';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {KlassModule} from './klass/klass.module';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    RouterModule
   ],
   providers: [],
   bootstrap: [AppComponent]
