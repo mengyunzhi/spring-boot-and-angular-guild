@@ -48,7 +48,6 @@ export class AddComponent implements OnInit {
    * @param teacher 教师
    */
   onTeacherSelected(teacher: Teacher) {
-    console.log(teacher);
     this.teacher = teacher;
   }
 
