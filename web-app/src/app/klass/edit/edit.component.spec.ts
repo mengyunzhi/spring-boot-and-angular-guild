@@ -11,6 +11,7 @@ import {Teacher} from '../../norm/entity/Teacher';
 import {FormTest} from '../../testing/FormTest';
 import SpyObj = jasmine.SpyObj;
 import {Test} from 'tslint';
+import {TeacherSelectComponent} from '../teacher-select/teacher-select.component';
 
 describe('klass EditComponent', () => {
   let component: EditComponent;
@@ -19,7 +20,7 @@ describe('klass EditComponent', () => {
     const routerSpy = jasmine.createSpyObj<Router>('Router', ['navigateByUrl']);
 
     TestBed.configureTestingModule({
-      declarations: [EditComponent],
+      declarations: [EditComponent, TeacherSelectComponent],
       imports: [
         ReactiveFormsModule,
         HttpClientTestingModule,
@@ -67,7 +68,6 @@ describe('klass EditComponent', () => {
 
     fixture.whenStable().then(() => {
       expect(FormTest.getInputValueByFixtureAndCss(fixture, '#name')).toEqual('测试编辑班级');
-      expect(FormTest.getInputValueByFixtureAndCss(fixture, '#teacherId')).toEqual('1');
       onSubmitTest(1);
     });
   };
@@ -81,7 +81,7 @@ describe('klass EditComponent', () => {
    */
   const onSubmitTest = (id: number) => {
     FormTest.setInputValue(fixture, '#name', '测试更新班级');
-    FormTest.setInputValue(fixture, '#teacherId', '100');
+    component.teacher = new Teacher(100, null, null, null);
 
     fixture.whenStable().then(() => {
       FormTest.clickButton(fixture, 'button');

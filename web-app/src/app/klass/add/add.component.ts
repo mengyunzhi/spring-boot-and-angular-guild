@@ -14,7 +14,7 @@ export class AddComponent implements OnInit {
   /*当发生请求错误时，显示该信息*/
   public static errorMessage = '数据保存失败，这可能是由于网络的原因引起的';
   name: FormControl;
-  teacherId: FormControl;
+  teacher: Teacher;
   /*当该值不为空时，可以显示在前台并提示用户*/
   message: string;
 
@@ -25,18 +25,18 @@ export class AddComponent implements OnInit {
 
   ngOnInit() {
     this.name = new FormControl('');
-    this.teacherId = new FormControl();
   }
 
   onSubmit(): void {
+    console.log('on submit');
     const url = 'http://localhost:8080/Klass';
     const klass = new Klass(undefined, this.name.value,
-      new Teacher(parseInt(this.teacherId.value, 10), undefined, undefined)
+      this.teacher
     );
     this.httpClient.post(url, klass)
       .subscribe(() => {
         console.log('保存成功');
-        this.router.navigate([''], {relativeTo: this.route});
+        this.router.navigateByUrl('', {relativeTo: this.route});
       }, (response) => {
         console.log(`向${url}发起的post请求发生错误` + response);
         this.setMessage(AddComponent.errorMessage);
@@ -45,10 +45,11 @@ export class AddComponent implements OnInit {
 
   /**
    * 当选择某个教师时触发
-   * @param {Teacher} teacher 教师
+   * @param teacher 教师
    */
   onTeacherSelected(teacher: Teacher) {
     console.log(teacher);
+    this.teacher = teacher;
   }
 
   /**

@@ -34,5 +34,4 @@ const routes: Routes = [
   ]
 })
 export class KlassModule {
-
 }

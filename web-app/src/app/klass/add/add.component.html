@@ -2,5 +2,5 @@
 <form (ngSubmit)="onSubmit()">
   <label for="name">名称：<input id="name" type="text" [formControl]="name"/></label>
   <label for="teacherId">教师：<app-teacher-select id="teacherId" (selected)="onTeacherSelected($event)"></app-teacher-select></label>
-  <button>保存</button>
+  <button id="klassAddButton">保存</button>
 </form>

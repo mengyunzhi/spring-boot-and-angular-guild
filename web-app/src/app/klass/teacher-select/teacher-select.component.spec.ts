@@ -60,7 +60,7 @@ describe('TeacherSelectComponent', () => {
    * 3. 模拟点击第0个option
    * 4. 断言观察到的数据是教师列表的第一个教师
    */
-  fit('测试组件弹射器', () => {
+  it('测试组件弹射器', () => {
     expectInit();
 
     component.selected.subscribe((teacher: Teacher) => {

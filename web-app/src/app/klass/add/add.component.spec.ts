@@ -6,6 +6,9 @@ import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {Klass} from '../../norm/entity/Klass';
+import {TeacherSelectComponent} from '../teacher-select/teacher-select.component';
+import {RouterTestingModule} from '@angular/router/testing';
+import {Teacher} from '../../norm/entity/Teacher';
 
 describe('Klass/AddComponent', () => {
   let component: AddComponent;
@@ -14,11 +17,12 @@ describe('Klass/AddComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddComponent],
+      declarations: [AddComponent, TeacherSelectComponent],
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        RouterTestingModule
       ]
     })
       .compileComponents();
@@ -39,7 +43,6 @@ describe('Klass/AddComponent', () => {
   it('测试C层向V层数据绑定', () => {
     expect(component).toBeTruthy();
     component.name.setValue('test');
-    component.teacherId.setValue(1);
     fixture.detectChanges();
 
     fixture.whenStable().then(() => {
@@ -47,10 +50,6 @@ describe('Klass/AddComponent', () => {
       const nameElement = debugElement.query(By.css('#name'));
       const nameInput: HTMLInputElement = nameElement.nativeElement;
       expect(nameInput.value).toBe('test');
-
-      const teacherIdElement = debugElement.query(By.css('#teacherId'));
-      const teacherIdInput: HTMLInputElement = teacherIdElement.nativeElement;
-      expect(teacherIdInput.value).toBe('1');
     });
   });
 
@@ -61,20 +60,12 @@ describe('Klass/AddComponent', () => {
    */
   it('测试V层向C层绑定', () => {
     expect(component).toBeTruthy();
-    fixture.whenStable().then(() => {
-      const debugElement: DebugElement = fixture.debugElement;
-      const nameElement = debugElement.query(By.css('#name'));
-      const nameInput: HTMLInputElement = nameElement.nativeElement;
-      nameInput.value = 'test2';
-      nameInput.dispatchEvent(new Event('input'));
-      expect(component.name.value).toBe('test2');
-
-      const teacherIdElement = debugElement.query(By.css('#teacherId'));
-      const teacherIdInput: HTMLInputElement = teacherIdElement.nativeElement;
-      teacherIdInput.value = '2';
-      teacherIdInput.dispatchEvent(new Event('input'));
-      expect(component.teacherId.value).toBe(2);
-    });
+    const debugElement: DebugElement = fixture.debugElement;
+    const nameElement = debugElement.query(By.css('#name'));
+    const nameInput: HTMLInputElement = nameElement.nativeElement;
+    nameInput.value = 'test2';
+    nameInput.dispatchEvent(new Event('input'));
+    expect(component.name.value).toBe('test2');
   });
 
   /**
@@ -86,7 +77,7 @@ describe('Klass/AddComponent', () => {
     httpTestingController = TestBed.get(HttpTestingController);
     expect(component).toBeTruthy();
     component.name.setValue('test3');
-    component.teacherId.setValue('3');
+    component.teacher = new Teacher(2, null, null, null);
     fixture.whenStable().then(() => {
       const debugElement: DebugElement = fixture.debugElement;
       const submitButtonElement = debugElement.query(By.css('button'));
@@ -96,9 +87,8 @@ describe('Klass/AddComponent', () => {
       const req = httpTestingController.expectOne('http://localhost:8080/Klass');
       expect(req.request.method).toEqual('POST');
       const klass: Klass = req.request.body.valueOf();
-      console.log(klass);
       expect(klass.name).toEqual('test3');
-      expect(klass.teacher.id).toEqual(3);
+      expect(klass.teacher.id).toEqual(2);
 
       req.flush(null, {status: 201, statusText: 'Accepted'});
     });
