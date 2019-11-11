@@ -25,17 +25,21 @@ export class TeacherSelectComponent implements OnInit {
    * 获取所有的教师，并传给V层
    */
   ngOnInit() {
-    this.teacherSelect = new FormControl();
+    this.teacherSelect = new FormControl(this.teacher);
     const url = 'http://localhost:8080/Teacher';
     this.httpClient.get(url)
       .subscribe((teachers: Array<Teacher>) => {
         this.teachers = teachers;
-        this.teachers.forEach((teacher: Teacher) => {
-          if (teacher.id === this.teacher.id) {
-            this.teacherSelect.setValue(teacher);
-          }
-        });
       });
+  }
+
+  /**
+   * 比较函数，标识用哪个字段来比较两个教师是否为同一个教师
+   * @param t1 源
+   * @param t2 目标
+   */
+  compareFn(t1: Teacher, t2: Teacher) {
+    return t1 && t2 ? t1.id === t2.id : t1 === t2;
   }
 
   onChange() {

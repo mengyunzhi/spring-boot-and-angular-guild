@@ -1,4 +1,4 @@
-<select id="teacherSelect" [formControl]="teacherSelect" (change)="onChange()">
+<select id="teacherSelect" [formControl]="teacherSelect" (change)="onChange()" [compareWith]="compareFn">
   <option *ngFor="let teacher of teachers" [ngValue]="teacher">
     {{teacher.name}}
   </option>

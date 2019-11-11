@@ -57,7 +57,7 @@ export class EditComponent implements OnInit {
     };
     this.httpClient.put(this.getUrl(), data)
       .subscribe(() => {
-        this.router.navigateByUrl('', {relativeTo: this.route});
+        this.router.navigateByUrl('/klass', {relativeTo: this.route});
       }, () => {
         console.error(`在${this.getUrl()}上的PUT请求发生错误`);
       });

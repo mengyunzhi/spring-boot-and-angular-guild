@@ -7,6 +7,7 @@ import {Teacher} from '../../norm/entity/Teacher';
 import {FormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {DebugElement} from '@angular/core';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('IndexComponent', () => {
   let component: IndexComponent;
@@ -16,7 +17,7 @@ describe('IndexComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [IndexComponent],
-      imports: [HttpClientTestingModule, FormsModule]
+      imports: [HttpClientTestingModule, FormsModule, RouterTestingModule]
     })
       .compileComponents();
   }));
