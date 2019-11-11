@@ -3,6 +3,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {Klass} from '../../norm/entity/Klass';
+import {Teacher} from '../../norm/entity/Teacher';
 
 @Component({
   selector: 'app-edit',
@@ -11,6 +12,7 @@ import {Klass} from '../../norm/entity/Klass';
 })
 export class EditComponent implements OnInit {
   formGroup: FormGroup;
+  teacher: Teacher;
   private url: string;
 
   constructor(private route: ActivatedRoute,
@@ -29,7 +31,8 @@ export class EditComponent implements OnInit {
     this.httpClient.get(this.getUrl())
       .subscribe((klass: Klass) => {
         this.formGroup.setValue({name: klass.name, teacherId: klass.teacher.id});
-      }, () => {
+        this.teacher = klass.teacher;
+        }, () => {
         console.error(`${this.getUrl()}请求发生错误`);
       });
   }
