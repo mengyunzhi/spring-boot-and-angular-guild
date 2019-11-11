@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Teacher} from '../../norm/entity/Teacher';
 import {FormControl} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
@@ -15,9 +15,11 @@ export class TeacherSelectComponent implements OnInit {
   teacherSelect: FormControl;
 
   @Output() selected = new EventEmitter<Teacher>();
+  @Input() teacher: { id: number };
 
   constructor(private httpClient: HttpClient) {
   }
+
 
   /**
    * 获取所有的教师，并传给V层
@@ -28,11 +30,15 @@ export class TeacherSelectComponent implements OnInit {
     this.httpClient.get(url)
       .subscribe((teachers: Array<Teacher>) => {
         this.teachers = teachers;
+        this.teachers.forEach((teacher: Teacher) => {
+          if (teacher.id === this.teacher.id) {
+            this.teacherSelect.setValue(teacher);
+          }
+        });
       });
   }
 
   onChange() {
-    console.log(this.teacherSelect.value);
     this.selected.emit(this.teacherSelect.value);
   }
 }
