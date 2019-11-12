@@ -93,4 +93,33 @@ describe('IndexComponent', () => {
     });
   });
 
+  /**
+   * 模拟返回班级列表
+   * 找到table中的第二行（第一行为表头）中的button元素
+   * 点击button元素
+   * 断言发起了预期的http请求
+   */
+  fit('测试删除按钮', () => {
+    const req = httpTestingController.expectOne('http://localhost:8080/Klass?name=');
+    const klasses = [
+      new Klass(100, '计科1901班', new Teacher(1, 'zhagnsan', '张三')),
+    ];
+    req.flush(klasses);
+    fixture.detectChanges();
+
+    const htmlButtonElement: HTMLButtonElement = fixture.debugElement.query(By.css('table tr td button:first-of-type')).nativeElement;
+    expect(htmlButtonElement).toBeDefined();
+    htmlButtonElement.click();
+    const req1 = httpTestingController.expectOne('http://localhost:8080/Klass/100');
+    expect(req1.request.method).toEqual('DELETE');
+    req1.flush('', {status: 204, statusText: 'No Content'});
+
+    /*重新获取table中数据，断言table只有表头*/
+    fixture.detectChanges();
+    const htmlTableElement: HTMLTableElement = fixture.debugElement.query(By.css('table')).nativeElement;
+    expect(htmlTableElement.rows.length).toBe(1);
+
+    httpTestingController.verify();
+  });
+
 });

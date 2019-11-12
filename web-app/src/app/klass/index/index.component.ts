@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Klass} from '../../norm/entity/Klass';
 
 @Component({
   selector: 'app-index',
@@ -22,6 +23,21 @@ export class IndexComponent implements OnInit {
 
   ngOnInit() {
     this.onQuery();
+  }
+
+  /**
+   * 删除班级
+   * @param klass 班级
+   */
+  onDelete(klass: Klass): void {
+    this.httpClient.delete(`http://localhost:8080/Klass/${klass.id}`)
+      .subscribe(() => {
+        this.klasses.forEach((inKlass, key) => {
+          if (klass === inKlass) {
+            this.klasses.splice(key, 1);
+          }
+        });
+      });
   }
 
   /**
