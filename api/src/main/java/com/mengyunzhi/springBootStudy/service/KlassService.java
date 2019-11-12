@@ -8,6 +8,14 @@ import java.util.List;
  * 班级服务
  */
 public interface KlassService {
+
+    /**
+     * 删除
+     *
+     * @param id 班级ID
+     */
+    void deleteById(Long id);
+
     /**
      * 获取所有班级列表
      *

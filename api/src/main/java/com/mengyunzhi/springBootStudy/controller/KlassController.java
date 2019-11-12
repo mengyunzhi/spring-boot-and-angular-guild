@@ -21,6 +21,12 @@ public class KlassController {
     @Autowired
     KlassService klassService;
 
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        klassService.deleteById(id);
+    }
+
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public Klass get(@PathVariable Long id) {

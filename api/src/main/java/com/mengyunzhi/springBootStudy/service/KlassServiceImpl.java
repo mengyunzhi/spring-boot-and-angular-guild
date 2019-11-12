@@ -17,6 +17,11 @@ public class KlassServiceImpl implements KlassService {
     KlassRepository klassRepository;
 
     @Override
+    public void deleteById(Long id) {
+        this.klassRepository.deleteById(id);
+    }
+
+    @Override
     public List<Klass> getAll(String name) {
         return this.klassRepository.findAllByNameContains(name);
     }
