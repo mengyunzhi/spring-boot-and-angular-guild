@@ -3,9 +3,14 @@ import {Routes, RouterModule} from '@angular/router';
 import {TeacherAddComponent} from './teacher/teacher-add.component';
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {TeacherIndexComponent} from './teacher/teacher-index.component';
+import {WelcomeComponent} from './welcome/welcome.component';
 
 
 const routes: Routes = [
+  {
+    path: '',
+    component: WelcomeComponent
+  },
   {
     path: 'teacher',
     component: TeacherIndexComponent

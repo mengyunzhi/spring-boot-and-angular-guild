@@ -11,6 +11,7 @@ import {TeacherIndexComponent} from './teacher/teacher-index.component';
 import {RouterModule} from '@angular/router';
 import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { FooterComponent } from './footer/footer.component';
     TeacherEditComponent,
     TeacherIndexComponent,
     NavComponent,
-    FooterComponent
+    FooterComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,
