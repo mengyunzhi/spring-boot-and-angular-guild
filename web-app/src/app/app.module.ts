@@ -10,13 +10,15 @@ import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {TeacherIndexComponent} from './teacher/teacher-index.component';
 import {KlassModule} from './klass/klass.module';
 import {RouterModule} from '@angular/router';
+import { NavComponent } from './nav/nav.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TeacherAddComponent,
     TeacherEditComponent,
-    TeacherIndexComponent
+    TeacherIndexComponent,
+    NavComponent
   ],
   imports: [
     BrowserModule,

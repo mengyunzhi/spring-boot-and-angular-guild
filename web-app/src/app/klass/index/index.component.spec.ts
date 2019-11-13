@@ -99,7 +99,7 @@ describe('IndexComponent', () => {
    * 点击button元素
    * 断言发起了预期的http请求
    */
-  fit('测试删除按钮', () => {
+  it('测试删除按钮', () => {
     const req = httpTestingController.expectOne('http://localhost:8080/Klass?name=');
     const klasses = [
       new Klass(100, '计科1901班', new Teacher(1, 'zhagnsan', '张三')),
