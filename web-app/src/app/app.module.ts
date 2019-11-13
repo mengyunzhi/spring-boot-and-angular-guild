@@ -10,6 +10,7 @@ import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {TeacherIndexComponent} from './teacher/teacher-index.component';
 import {RouterModule} from '@angular/router';
 import { NavComponent } from './nav/nav.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { NavComponent } from './nav/nav.component';
     TeacherAddComponent,
     TeacherEditComponent,
     TeacherIndexComponent,
-    NavComponent
+    NavComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
