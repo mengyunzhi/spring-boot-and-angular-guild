@@ -8,7 +8,6 @@ import {TeacherAddComponent} from './teacher/teacher-add.component';
 import {FormsModule} from '@angular/forms';
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {TeacherIndexComponent} from './teacher/teacher-index.component';
-import {KlassModule} from './klass/klass.module';
 import {RouterModule} from '@angular/router';
 import { NavComponent } from './nav/nav.component';
 
