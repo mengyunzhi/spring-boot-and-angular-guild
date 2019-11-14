@@ -9,7 +9,7 @@ import {By} from '@angular/platform-browser';
 import {DebugElement} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 
-describe('IndexComponent', () => {
+describe('klass -> IndexComponent', () => {
   let component: IndexComponent;
   let fixture: ComponentFixture<IndexComponent>;
   let httpTestingController: HttpTestingController;
