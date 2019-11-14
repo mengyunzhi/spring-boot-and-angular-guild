@@ -6,7 +6,13 @@ import {isNull} from 'util';
 /**
  * 表单测试
  */
-export class FormTest {
+export class FormTest<T> {
+  private readonly fixture: ComponentFixture<T>;
+
+  constructor(fixture: ComponentFixture<T>) {
+    this.fixture = fixture;
+  }
+
   /**
    * 获取input输入框的值
    * 首先获取整个V层元素
@@ -44,7 +50,6 @@ export class FormTest {
     return true;
   }
 
-
   /**
    * 获取button按钮，并点击
    * @param fixture 夹具
@@ -71,4 +76,22 @@ export class FormTest {
     const debugElement: DebugElement = fixture.debugElement;
     return debugElement.query(By.css(cssSelector));
   }
+
+  /**
+   * 设置input输入的值
+   * @param cssSelector CSS选择器
+   * @param value 值
+   */
+  setInputValue(cssSelector: string, value: string): boolean {
+    return FormTest.setInputValue(this.fixture, cssSelector, value);
+  }
+
+  /**
+   * 点击某个按钮
+   * @param cssSelector CSS选择器
+   */
+  clickButton(cssSelector: string): boolean {
+    return FormTest.clickButton(this.fixture, cssSelector);
+  }
+
 }
