@@ -31,7 +31,7 @@ describe('student/AddComponent', () => {
    * 2. 点击保存按钮
    * 3. 断言输入的值传入到了C层
    */
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
     formTest.setInputValue('input[name="name"]', 'testname');
     formTest.setInputValue('input[name="sno"]', 'testno');
