@@ -32,7 +32,7 @@ describe('student KlassSelectComponent', () => {
    * 4. 改变select的值
    * 5. 断言订阅的语句被成功的执行过了
    */
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
     httpTestingController = TestBed.get(HttpTestingController);
     const req = httpTestingController.expectOne(component.url);
