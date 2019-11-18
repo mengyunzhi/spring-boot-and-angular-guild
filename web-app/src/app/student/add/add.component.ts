@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Student} from '../../norm/entity/student';
 import {FormControl, FormGroup} from '@angular/forms';
+import {StudentService} from '../../service/student.service';
 
 @Component({
   selector: 'app-add',
@@ -11,7 +12,7 @@ export class AddComponent implements OnInit {
   student: Student;
   formGroup: FormGroup;
 
-  constructor() {
+  constructor(private studentService: StudentService) {
   }
 
   ngOnInit() {
