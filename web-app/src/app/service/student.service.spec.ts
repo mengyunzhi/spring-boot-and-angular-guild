@@ -6,7 +6,7 @@ import {Student} from '../norm/entity/student';
 import {Klass} from '../norm/entity/Klass';
 import {CanLoad} from '@angular/router';
 
-fdescribe('service -> StudentService', () => {
+describe('service -> StudentService', () => {
   let service: StudentService;
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule]
@@ -21,6 +21,16 @@ fdescribe('service -> StudentService', () => {
   });
 
 
+  /**
+   * 测试新增
+   * 1. 初始化测试数据
+   * 2. 调用保存方法并进行订阅
+   * 2.1 断言响应中返回了学生ID信息
+   * 3. 断言发起了HTTP POST请
+   * 4. 断言请求数据
+   * 5. 模拟HTTP响应数据
+   * 6. 断言订阅的方法被调用
+   */
   it('save', () => {
     const student: Student = new Student(
       {
@@ -37,7 +47,13 @@ fdescribe('service -> StudentService', () => {
     const httpTestingController: HttpTestingController = TestBed.get(HttpTestingController);
     const req = httpTestingController.expectOne('http://localhost:8080/Student');
     expect(req.request.method).toEqual('POST');
+
+    const studentBody: Student = req.request.body.valueOf();
+    expect(studentBody.name).toEqual(student.name);
+    expect(studentBody.klass.id).toEqual(student.klass.id);
+
     req.flush(new Student({id: -1}));
+
     expect(called).toBe(true);
   });
 });

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Student} from '../../norm/entity/student';
 import {FormControl, FormGroup} from '@angular/forms';
 import {StudentService} from '../../service/student.service';
+import {Klass} from '../../norm/entity/Klass';
 
 @Component({
   selector: 'app-add',
@@ -11,6 +12,7 @@ import {StudentService} from '../../service/student.service';
 export class AddComponent implements OnInit {
   student: Student;
   formGroup: FormGroup;
+  klass: Klass;
 
   constructor(private studentService: StudentService) {
   }
@@ -23,9 +25,16 @@ export class AddComponent implements OnInit {
     });
   }
 
+  onSelectKlass(klass: Klass): void {
+    this.klass = klass;
+  }
+
   onSubmit(): void {
     this.student = this.formGroup.value;
-    console.log(this.student);
+    this.student.klass = this.klass;
+    this.studentService.save(this.student).subscribe((student: Student) => {
+      console.log(student);
+    });
   }
 
 }

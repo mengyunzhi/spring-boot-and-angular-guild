@@ -2,6 +2,6 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
   <label>姓名：<input name="name" formControlName="name"/></label>
   <label>学号：<input name="sno" formControlName="sno"/></label>
-  <label>班级：todo</label>
+  <label>班级：<app-klass-select (selected)="onSelectKlass($event)"></app-klass-select></label>
   <button type="submit">保存</button>
 </form>
