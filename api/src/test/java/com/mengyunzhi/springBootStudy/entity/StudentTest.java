@@ -32,7 +32,7 @@ public class StudentTest {
     public void before() {
         this.student = new Student();
         if (this.klass == null) {
-            this.klass = new  Klass();
+            this.klass = new Klass();
             this.klassRepository.save(this.klass);
         }
 
@@ -56,6 +56,20 @@ public class StudentTest {
     public void snoNullTest() {
         this.student.setSno(null);
         this.studentRepository.save(student);
+    }
+
+    @Test
+    public void snoUniqueTest() {
+        this.studentRepository.save(this.student);
+        this.before();
+        boolean called = false;
+        try {
+            this.studentRepository.save(this.student);
+
+        } catch (DataIntegrityViolationException e) {
+            called = true;
+        }
+        Assertions.assertThat(called).isTrue();
     }
 
 }
