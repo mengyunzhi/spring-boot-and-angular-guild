@@ -3,6 +3,7 @@ package com.mengyunzhi.springBootStudy.entity;
 import com.mengyunzhi.springBootStudy.repository.KlassRepository;
 import com.mengyunzhi.springBootStudy.repository.StudentRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class StudentTest {
-
+    private Klass klass;
+    private Student student;
     /*学生*/
     @Autowired
     StudentRepository studentRepository;
@@ -23,28 +26,36 @@ public class StudentTest {
     KlassRepository klassRepository;
 
     /**
-     * 保存测试
-     * 1. 直接保存空学生，断言null异常
-     * 2. 持久化一个班级
-     * 3. 设置学生的班级，再保存。成功
+     * 在每个测试用例前执行1次
      */
-    @Test
-    public void save() {
-        Student student = new Student();
-        boolean called = false;
-        try {
-            this.studentRepository.save(student);
-        } catch (DataIntegrityViolationException e) {
-            System.out.println("发生了异常");
-            called = true;
+    @Before
+    public void before() {
+        this.student = new Student();
+        if (this.klass == null) {
+            this.klass = new  Klass();
+            this.klassRepository.save(this.klass);
         }
-        Assertions.assertThat(called).isTrue();
 
-        System.out.println("程序执行到此，打印控制台");
-        Klass klass = new Klass();
-        this.klassRepository.save(klass);
+        this.student.setName("测试名称");
+        this.student.setSno("032282");
+        this.student.setKlass(this.klass);
+    }
 
-        student.setKlass(klass);
+    @Test(expected = DataIntegrityViolationException.class)
+    public void klassNullTest() {
+        this.student.setKlass(null);
         this.studentRepository.save(student);
     }
+
+    @Test
+    public void save() {
+        this.studentRepository.save(this.student);
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void snoNullTest() {
+        this.student.setSno(null);
+        this.studentRepository.save(student);
+    }
+
 }

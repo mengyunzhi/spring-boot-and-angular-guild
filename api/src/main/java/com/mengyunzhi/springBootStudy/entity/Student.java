@@ -10,6 +10,7 @@ public class Student {
 
     private String name;
 
+    @Column(nullable = false)
     private String sno;
 
     @ManyToOne
