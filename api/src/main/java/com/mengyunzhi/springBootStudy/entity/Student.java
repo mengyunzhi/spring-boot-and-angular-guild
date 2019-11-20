@@ -1,5 +1,7 @@
 package com.mengyunzhi.springBootStudy.entity;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,6 +10,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, unique = true)
@@ -18,6 +21,30 @@ public class Student {
     private Klass klass;
 
     public Student() {
+    }
+
+    /**
+     * 在实体保存到数据库以前，执行1次
+     * 1. 校验name 字段长度为2-20
+     * 2. 校验sno 字段长为为6
+     */
+    @PrePersist
+    public void perPersis() {
+        if (this.name != null ) {
+            if (this.name.length() < 2) {
+                throw new DataIntegrityViolationException("name length less than 2");
+            }
+
+            if (this.name.length() > 20) {
+                throw new DataIntegrityViolationException("name length more than 20");
+            }
+        }
+
+        if (this.sno != null) {
+            if (this.sno.length() != 6) {
+                throw new DataIntegrityViolationException("sno length must be 6");
+            }
+        }
     }
 
     public Long getId() {
