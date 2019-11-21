@@ -6,7 +6,6 @@ import com.mengyunzhi.springBootStudy.repository.KlassRepository;
 import com.mengyunzhi.springBootStudy.repository.TeacherRepository;
 import com.mengyunzhi.springBootStudy.service.KlassService;
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
