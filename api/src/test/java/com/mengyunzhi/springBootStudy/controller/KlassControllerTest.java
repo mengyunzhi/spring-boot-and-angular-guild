@@ -5,9 +5,11 @@ import com.mengyunzhi.springBootStudy.entity.Teacher;
 import com.mengyunzhi.springBootStudy.repository.KlassRepository;
 import com.mengyunzhi.springBootStudy.repository.TeacherRepository;
 import com.mengyunzhi.springBootStudy.service.KlassService;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -89,10 +91,10 @@ public class KlassControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(201));
 
-        List<Klass> klasses = (List<Klass>) this.klassRepository.findAll();
-        Assert.assertEquals(klasses.size(), 1);
-        Klass klass = klasses.get(0);
-        Assert.assertEquals(klass.getName(), "测试单元测试班级");
-        Assert.assertEquals(klass.getTeacher().getName(), "潘杰");
+        ArgumentCaptor<Klass> klassArgumentCaptor = ArgumentCaptor.forClass(Klass.class);
+        Mockito.verify(klassService).save(klassArgumentCaptor.capture());
+        Klass passKlass = klassArgumentCaptor.getValue();
+        Assertions.assertThat(passKlass.getName()).isEqualTo("测试单元测试班级");
+        Assertions.assertThat(passKlass.getTeacher().getId()).isEqualTo(teacher.getId());
     }
 }
