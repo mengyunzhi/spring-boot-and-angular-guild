@@ -52,6 +52,7 @@ public class StudentRepositoryTest {
 
     @Test
     public void specificationTest() {
+        List<Student> oldStudentList = (List<Student>) this.studentRepository.findAll();
         /* 初始化2个班级并持久化*/
         Klass klass = new Klass();
         klass.setName("testKlass");
@@ -77,7 +78,7 @@ public class StudentRepositoryTest {
         /* 断言存入了2个学生 */
         List<Student> studentList = (List<Student>) this.studentRepository.findAll();
         logger.info("当前数据库总计有{}个学生", studentList.size());
-        Assertions.assertThat(studentList.size()).isEqualTo(2);
+        Assertions.assertThat(studentList.size()).isEqualTo(2 + oldStudentList.size());
 
         /* 初始化第一个班级做为查询条件 */
         Specification<Student> klassSpecification = new Specification<Student>() {
