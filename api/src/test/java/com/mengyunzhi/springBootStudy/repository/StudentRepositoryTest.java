@@ -10,15 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.persistence.criteria.*;
-import java.util.List;
-
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -51,8 +47,7 @@ public class StudentRepositoryTest {
     }
 
     @Test
-    public void specificationTest() {
-        List<Student> oldStudentList = (List<Student>) this.studentRepository.findAll();
+    public void findAll() {
         /* 初始化2个班级并持久化*/
         Klass klass = new Klass();
         klass.setName("testKlass");
@@ -75,88 +70,30 @@ public class StudentRepositoryTest {
         student1.setKlass(klass1);
         this.studentRepository.save(student1);
 
-        /* 断言存入了2个学生 */
-        List<Student> studentList = (List<Student>) this.studentRepository.findAll();
-        logger.info("当前数据库总计有{}个学生", studentList.size());
-        Assertions.assertThat(studentList.size()).isEqualTo(2 + oldStudentList.size());
+        Page studentPage = this.studentRepository.findAll("testStudentName", "032282", klass, PageRequest.of(0, 2));
+        Assertions.assertThat(studentPage.getTotalElements()).isEqualTo(1);
 
-        /* 初始化第一个班级做为查询条件 */
-        Specification<Student> klassSpecification = new Specification<Student>() {
-            /**
-             * 本条件查询：班级为klassEven的学生
-             * @param root 根(Student)实体
-             * @param criteriaQuery 条件查询
-             * @param criteriaBuilder 条件创建者
-             * @return 查询谓语
-             */
-            @Override
-            public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.equal(root.get("klass").as(Klass.class), klass);
-            }
-        };
+        studentPage = this.studentRepository.findAll("testStudentName12", "032282", klass, PageRequest.of(0, 2));
+        Assertions.assertThat(studentPage.getTotalElements()).isEqualTo(0);
 
-        /* 加入班级条件后查询，断言查询的数量为1 */
-        studentList = (List<Student>) this.studentRepository.findAll(klassSpecification);
-        logger.info("使用班级为条件进行查询，查询到{}个学生", studentList.size());
-        Assertions.assertThat(studentList.size()).isEqualTo(1);
+        studentPage = this.studentRepository.findAll("testStudentName", "0322821", klass, PageRequest.of(0, 2));
+        Assertions.assertThat(studentPage.getTotalElements()).isEqualTo(0);
 
-        /* 学号0322做为查询条件 */
-        Specification<Student> snoSpecification = new Specification<Student>() {
-            @Override
-            public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.like(root.get("sno").as(String.class), "0322%");
-            }
-        };
+        studentPage = this.studentRepository.findAll("testStudentName", "032282", klass1, PageRequest.of(0, 2));
+        Assertions.assertThat(studentPage.getTotalElements()).isEqualTo(0);
 
-        /* 断言两个学生都是以此学号打头的 */
-        studentList = (List<Student>) this.studentRepository.findAll(snoSpecification);
-        logger.info("使用学号0322条件进行查询，查询到{}个学生", studentList.size());
-        Assertions.assertThat(studentList.size()).isEqualTo(2);
+        studentPage = this.studentRepository.findAll(null, "032282", klass, PageRequest.of(0, 2));
+        Assertions.assertThat(studentPage.getTotalElements()).isEqualTo(1);
 
-        /* 学号以322打头 */
-        snoSpecification = new Specification<Student>() {
-            @Override
-            public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.like(root.get("sno").as(String.class), "322%");
-            }
-        };
+        studentPage = this.studentRepository.findAll(null, null, null, PageRequest.of(0, 2));
+        Assertions.assertThat(studentPage.getTotalElements()).isEqualTo(2);
 
-        /* 断言查询到0个学生 */
-        studentList = (List<Student>) this.studentRepository.findAll(snoSpecification);
-        logger.info("使用学号322为条件进行查询，查询到{}个学生", studentList.size());
-        Assertions.assertThat(studentList.size()).isEqualTo(0);
+        studentPage = this.studentRepository.findAll(null, null, new Klass(), PageRequest.of(0, 2));
+        Assertions.assertThat(studentPage.getTotalElements()).isEqualTo(2);
+    }
 
-        /* 学号03228打头，断言获取了一个学生 */
-        snoSpecification = new Specification<Student>() {
-            @Override
-            public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.like(root.get("sno").as(String.class), "03228%");
-            }
-        };
-        studentList = (List<Student>) this.studentRepository.findAll(snoSpecification);
-        logger.info("使用学号03228为条件进行查询，查询到{}个学生", studentList.size());
-        Assertions.assertThat(studentList.size()).isEqualTo(1);
-
-        /* 姓名包含StudentN，断言获取了两个学生 */
-        Specification<Student> nameSpecification = new Specification<Student>() {
-            @Override
-            public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.like(root.get("name").as(String.class), "%StudentN%");
-            }
-        };
-        studentList = (List<Student>) this.studentRepository.findAll(nameSpecification);
-        logger.info("姓名包含StudentN进行查询，查询到{}个学生", studentList.size());
-        Assertions.assertThat(studentList.size()).isEqualTo(2);
-
-        /* 姓名包含Name1，断言获取了1个学生 */
-        nameSpecification = new Specification<Student>() {
-            @Override
-            public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.like(root.get("name").as(String.class), "%Name1%");
-            }
-        };
-        studentList = (List<Student>) this.studentRepository.findAll(nameSpecification);
-        logger.info("姓名包含Name1进行查询，查询到{}个学生", studentList.size());
-        Assertions.assertThat(studentList.size()).isEqualTo(1);
+    @Test(expected = InvalidDataAccessApiUsageException.class)
+    public void findAllWithPageableIsNull() {
+       this.studentRepository.findAll("name", "sno", new Klass(), null);
     }
 }

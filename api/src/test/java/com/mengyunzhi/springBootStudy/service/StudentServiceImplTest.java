@@ -7,12 +7,16 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -28,11 +32,14 @@ import java.util.List;
 public class StudentServiceImplTest {
     private static Logger logger = LoggerFactory.getLogger(StudentServiceImplTest.class);
 
-    @MockBean
+    @Autowired
     StudentRepository studentRepository;
 
     @Autowired
     StudentService studentService;
+
+    @Autowired
+    ApplicationContext applicationContext;
 
     /**
      * 保存
@@ -42,6 +49,10 @@ public class StudentServiceImplTest {
      */
     @Test
     public void save() {
+        StudentRepository studentRepository = Mockito.mock(StudentRepository.class);
+        ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) applicationContext;
+        configurableApplicationContext.getBeanFactory().registerSingleton("StudentRepository", studentRepository);
+
         Student passStudent = new Student();
         Student mockReturnStudent = new Student();
         Mockito.when(studentRepository.save(Mockito.any(Student.class)))
@@ -78,5 +89,10 @@ public class StudentServiceImplTest {
         ArgumentCaptor<Pageable> pageableArgumentCaptor = ArgumentCaptor.forClass(Pageable.class);
         Mockito.verify(this.studentRepository).findAll(pageableArgumentCaptor.capture());
         Assertions.assertThat(pageableArgumentCaptor.getValue()).isEqualTo(mockInPageable);
+    }
+
+    @Test
+    public void findAllSpecs() {
+        this.studentService.findAll("hello", "02123", 1L, PageRequest.of(0, 2));
     }
 }
