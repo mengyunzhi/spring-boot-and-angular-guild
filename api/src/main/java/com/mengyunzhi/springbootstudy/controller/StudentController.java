@@ -19,8 +19,17 @@ public class StudentController {
     StudentService studentService;
 
     @GetMapping
-    public Page<Student> findAll(@RequestParam int page, @RequestParam int size) {
-        return this.studentService.findAll(PageRequest.of(page, size));
+    public Page<Student> findAll(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String sno,
+            @RequestParam(required = false) Long klassId,
+            @RequestParam int page,
+            @RequestParam int size) {
+        return this.studentService.findAll(
+                name,
+                sno,
+                klassId,
+                PageRequest.of(page, size));
     }
 
     @PostMapping

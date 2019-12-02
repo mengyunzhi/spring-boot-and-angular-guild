@@ -4,6 +4,8 @@ import com.mengyunzhi.springbootstudy.entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 学生
  * @Author panjie@yunzhiclub.com
@@ -33,5 +35,5 @@ public interface StudentService {
      * @param pageable
      * @return
      */
-    Page<Student> findAll(String name, String sno, Long klassId, Pageable pageable);
+    Page<Student> findAll(String name, String sno, Long klassId, @NotNull Pageable pageable);
 }

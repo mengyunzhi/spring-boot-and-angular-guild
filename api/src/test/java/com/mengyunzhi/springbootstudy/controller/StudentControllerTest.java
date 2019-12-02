@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -67,13 +68,21 @@ public class StudentControllerTest {
                 PageRequest.of(1, 2),
                 4
         );
-        Mockito.when(this.studentService.findAll(Mockito.any(Pageable.class)))
+
+        Mockito.when(this.studentService
+                .findAll(Mockito.anyString(),
+                        Mockito.anyString(),
+                        Mockito.anyLong(),
+                        Mockito.any(Pageable.class)))
                 .thenReturn(mockOutStudentPage);
 
         logger.info("以'每页2条，请求第1页'为参数发起请求，断言返回状态码为200，并接收响应数据");
         String url = "/Student";
         MvcResult mvcResult = this.mockMvc.perform(
                 MockMvcRequestBuilders.get(url)
+                        .param("name", "testName")
+                        .param("sno", "testSno")
+                        .param("klassId", "1")
                         .param("page", "1")
                         .param("size", "2"))
                 .andDo(MockMvcResultHandlers.print())
@@ -106,6 +115,33 @@ public class StudentControllerTest {
         }
 
         return;
+    }
+
+    /**
+     * 请求参数测试
+     * @throws Exception
+     */
+    @Test
+    public void findAllRequestParam() throws Exception {
+        String url = "/Student";
+        logger.info("只传入page size，不报错");
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.get(url)
+                        .param("page", "1")
+                        .param("size", "2"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        logger.info("不传page报错");
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.get(url)
+                        .param("size", "2"))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()));
+
+        logger.info("不传size报错");
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.get(url)
+                        .param("page", "1"))
+                .andExpect(MockMvcResultMatchers.status().is(400));
     }
 
     @Test
