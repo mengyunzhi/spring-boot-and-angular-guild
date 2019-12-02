@@ -1,11 +1,12 @@
-package com.mengyunzhi.springBootStudy.service;
+package com.mengyunzhi.springbootstudy.service;
 
-import com.mengyunzhi.springBootStudy.entity.Student;
+import com.mengyunzhi.springbootstudy.entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
  * 学生
+ * @Author panjie@yunzhiclub.com
  */
 public interface StudentService {
     /**
