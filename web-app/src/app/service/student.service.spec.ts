@@ -4,8 +4,9 @@ import {StudentService} from './student.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {Student} from '../norm/entity/student';
 import {Klass} from '../norm/entity/Klass';
+import {HttpRequest} from '@angular/common/http';
 
-fdescribe('service -> StudentService', () => {
+describe('service -> StudentService', () => {
   let service: StudentService;
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule]
@@ -16,8 +17,52 @@ fdescribe('service -> StudentService', () => {
   });
 
   /* 分页测试 */
-  it('page', () => {
-    expect(service).toBeTruthy();
+  fit('page', () => {
+    /* 模拟返回数据 */
+    const mockResult = {
+      totalPages: 10,
+      content: new Array(new Student({}), new Student({}))
+    };
+
+    /* 进行订阅，发送数据后将called置true */
+    let called = false;
+    service.page({}).subscribe((success: { totalPages: number, content: Array<Student> }) => {
+      called = true;
+      expect(success.totalPages).toEqual(10);
+      expect(success.content.length).toBe(2);
+    });
+
+    /* 断言发起了http请求，方法为get；请求参数值符合预期 */
+    const req = TestBed.get(HttpTestingController).expectOne((request: HttpRequest<any>) => {
+      return request.url === 'http://localhost:8080/Student';
+    });
+    expect(req.request.method).toEqual('GET');
+    expect(req.request.params.get('name')).toEqual('');
+    expect(req.request.params.get('sno')).toEqual('');
+    expect(req.request.params.get('klassId')).toEqual('');
+    expect(req.request.params.get('page')).toEqual('0');
+    expect(req.request.params.get('size')).toEqual('10');
+
+    req.flush(mockResult);
+    expect(called).toBe(true);
+  });
+
+
+  /* 分页参数测试 */
+  fit('page params test', () => {
+    service.page({name: 'name', sno: 'sno', klassId: 1, page: 2, size: 20}).subscribe();
+    /* 断言发起了http请求，方法为get；请求参数值符合预期 */
+    const req = TestBed.get(HttpTestingController).expectOne(
+      request => request.url === 'http://localhost:8080/Student'
+    );
+    expect(req.request.method).toEqual('GET');
+    expect(req.request.params.get('name')).toEqual('name');
+    expect(req.request.params.get('sno')).toEqual('sno');
+    expect(req.request.params.get('klassId')).toEqual('1');
+    expect(req.request.params.get('page')).toEqual('2');
+    expect(req.request.params.get('size')).toEqual('20');
+
+    req.flush({});
   });
 
 

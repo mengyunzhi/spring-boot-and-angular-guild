@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Student} from '../norm/entity/student';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Klass} from '../norm/entity/Klass';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +15,28 @@ export class StudentService {
    * 分页
    * @param params name:名称,sno:学号,klassId:班级ID,page:第几页,size:每页大小
    */
-  page(params: { name?: string, sno?: string, klassId?: number, page?: number, size?: number}):
+  page(params: { name?: string, sno?: string, klassId?: number, page?: number, size?: number }):
     Observable<{ totalPages: number, content: Array<Student> }> {
-    return null;
+    const url = 'http://localhost:8080/Student';
+
+    /* 设置默认值 */
+    if (params.page === undefined) {
+      params.page = 0;
+    }
+    if (params.size === undefined) {
+      params.size = 10;
+    }
+
+    /* 初始化查询参数 */
+    const queryParams = new HttpParams()
+      .set('name', params.name ? params.name : '')
+      .set('sno', params.sno ? params.sno : '')
+      .set('klassId', params.klassId ? params.klassId.toString() : '')
+      .set('page', params.page.toString())
+      .set('size', params.size.toString());
+    console.log(queryParams);
+
+    return this.httpClient.get<{ totalPages: number, content: Array<Student> }>(url, {params: queryParams});
   }
 
   /**

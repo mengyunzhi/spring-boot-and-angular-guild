@@ -6,7 +6,7 @@ import {CoreModule} from '../../core/core.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-fdescribe('Student -> IndexComponent', () => {
+describe('Student -> IndexComponent', () => {
   let component: IndexComponent;
   let fixture: ComponentFixture<IndexComponent>;
 
