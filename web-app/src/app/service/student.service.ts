@@ -12,8 +12,13 @@ export class StudentService {
   constructor(private httpClient: HttpClient) {
   }
 
-  page(params: {name?: string, sno?: string, klass?: Klass, page: number, size: number} ): Observable<{totalPages: number, content: Array<Student>}> {
-   return null;
+  /**
+   * 分页
+   * @param params name:名称,sno:学号,klassId:班级ID,page:第几页,size:每页大小
+   */
+  page(params: { name?: string, sno?: string, klassId?: number, page?: number, size?: number}):
+    Observable<{ totalPages: number, content: Array<Student> }> {
+    return null;
   }
 
   /**
