@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Student} from '../norm/entity/student';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {Klass} from '../norm/entity/Klass';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,10 @@ import {Observable} from 'rxjs';
 export class StudentService {
 
   constructor(private httpClient: HttpClient) {
+  }
+
+  page(params: {name?: string, sno?: string, klass?: Klass, page: number, size: number} ): Observable<{totalPages: number, content: Array<Student>}> {
+   return null;
   }
 
   /**

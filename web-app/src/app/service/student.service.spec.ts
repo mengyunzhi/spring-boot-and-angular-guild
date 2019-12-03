@@ -4,9 +4,8 @@ import {StudentService} from './student.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {Student} from '../norm/entity/student';
 import {Klass} from '../norm/entity/Klass';
-import {CanLoad} from '@angular/router';
 
-describe('service -> StudentService', () => {
+fdescribe('service -> StudentService', () => {
   let service: StudentService;
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule]
@@ -16,7 +15,8 @@ describe('service -> StudentService', () => {
     service = TestBed.get(StudentService);
   });
 
-  it('should be created', () => {
+  /* 分页测试 */
+  it('page', () => {
     expect(service).toBeTruthy();
   });
 

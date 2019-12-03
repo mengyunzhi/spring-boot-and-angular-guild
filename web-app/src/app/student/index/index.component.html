@@ -1,0 +1,26 @@
+<form (ngSubmit)="onQuery()">
+  <label>姓名：<input [formControl]="params.name" type="text" /></label>
+  <label>学号：<input [formControl]="params.sno" type="text" /></label>
+  <label>班级：<app-klass-select [klass]="params.klass"></app-klass-select></label>
+  <button type="submit">查询</button>
+</form>
+
+<table>
+  <tr>
+    <th>选择</th>
+    <th>序号</th>
+    <th>姓名</th>
+    <th>学号</th>
+    <th>班级</th>
+    <th>操作</th>
+  </tr>
+  <tr *ngFor="let student of pageStudent.content; index as index">
+    <td></td>
+    <td>{{index + 1}}</td>
+    <td>{{student.name}}</td>
+    <td>{{student.sno}}</td>
+    <td>{{student.klass.name}}</td>
+    <td></td>
+  </tr>
+</table>
+<div *ngIf="pageStudent">第{{params.page}}/{{pageStudent.totalPages}}页 每页{{params.size}}条 首页 上一页 1 2 3 下一页 尾页</div>

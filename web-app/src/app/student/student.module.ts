@@ -5,10 +5,11 @@ import {StudentRoutingModule} from './student-routing.module';
 import { KlassSelectComponent } from './klass-select/klass-select.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../core/core.module';
+import { IndexComponent } from './index/index.component';
 
 
 @NgModule({
-  declarations: [AddComponent, KlassSelectComponent],
+  declarations: [AddComponent, KlassSelectComponent, IndexComponent],
   imports: [
     CommonModule,
     StudentRoutingModule,
