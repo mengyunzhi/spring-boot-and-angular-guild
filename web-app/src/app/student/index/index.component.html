@@ -1,7 +1,9 @@
 <form (ngSubmit)="onQuery()">
-  <label>姓名：<input [formControl]="params.name" type="text" /></label>
-  <label>学号：<input [formControl]="params.sno" type="text" /></label>
-  <label>班级：<app-klass-select [klass]="params.klass"></app-klass-select></label>
+  <label>姓名：<input name="name" [formControl]="params.name" type="text"/></label>
+  <label>学号：<input name="sno" [formControl]="params.sno" type="text"/></label>
+  <label>班级：
+    <app-klass-select [klass]="params.klass" (selected)="onSelectKlass($event)"></app-klass-select>
+  </label>
   <button type="submit">查询</button>
 </form>
 
@@ -23,4 +25,25 @@
     <td></td>
   </tr>
 </table>
-<div *ngIf="pageStudent">第{{params.page}}/{{pageStudent.totalPages}}页 每页{{params.size}}条 首页 上一页 1 2 3 下一页 尾页</div>
+<div *ngIf="pageStudent" class="row">
+  <div class="col-4" id="pageInfo">
+    第{{params.page}}/{{pageStudent.totalPages}}页 每页{{params.size}}条
+  </div>
+  <div class="col-8">
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" [ngClass]="{'disabled': params.page === 0}" (click)="onPage(0)">
+          <span class="page-link">Previous</span>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active">
+        <span class="page-link">2<span class="sr-only">(current)</span></span>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

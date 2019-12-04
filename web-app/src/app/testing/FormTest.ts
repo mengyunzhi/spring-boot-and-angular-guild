@@ -42,7 +42,7 @@ export class FormTest<T> {
   static setInputValue(fixture: ComponentFixture<any>, cssSelector: string, value: string): boolean {
     const selectorElement = this.getSelectorElement(fixture, cssSelector);
     if (isNull(selectorElement)) {
-      return false;
+      throw new Error(`未找到css选器${cssSelector}对应的html元素`);
     }
     const htmlInputElement: HTMLInputElement = selectorElement.nativeElement;
     htmlInputElement.value = value;

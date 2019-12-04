@@ -17,7 +17,7 @@ describe('service -> StudentService', () => {
   });
 
   /* 分页测试 */
-  fit('page', () => {
+  it('page', () => {
     /* 模拟返回数据 */
     const mockResult = {
       totalPages: 10,
@@ -49,7 +49,7 @@ describe('service -> StudentService', () => {
 
 
   /* 分页参数测试 */
-  fit('page params test', () => {
+  it('page params test', () => {
     service.page({name: 'name', sno: 'sno', klassId: 1, page: 2, size: 20}).subscribe();
     /* 断言发起了http请求，方法为get；请求参数值符合预期 */
     const req = TestBed.get(HttpTestingController).expectOne(
