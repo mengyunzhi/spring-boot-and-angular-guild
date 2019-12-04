@@ -33,7 +33,10 @@
     <nav>
       <ul class="pagination">
         <li class="page-item" [ngClass]="{'disabled': params.page === 0}" (click)="onPage(0)">
-          <span class="page-link">Previous</span>
+          <span class="page-link">首页</span>
+        </li>
+        <li class="page-item" [ngClass]="{'disabled': params.page === 0}" (click)="onPage(params.page - 1)">
+          <span class="page-link">上一页</span>
         </li>
         <li class="page-item"><a class="page-link" href="#">1</a></li>
         <li class="page-item active">

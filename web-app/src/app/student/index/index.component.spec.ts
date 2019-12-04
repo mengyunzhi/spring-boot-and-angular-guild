@@ -139,7 +139,7 @@ describe('Student -> IndexComponent', () => {
     expect(text).toContain(`每页${component.params.size}条`);
   });
 
-  fit('分页 -> 首页样式测试', () => {
+  it('分页 -> 首页样式测试', () => {
     /* 获取首页按钮 */
     const debugElement = fixture.debugElement.query(By.css('ul.pagination > li:first-child'));
     const htmlliElement: HTMLLIElement = debugElement.nativeElement;
@@ -156,4 +156,57 @@ describe('Student -> IndexComponent', () => {
     expect(htmlliElement.classList.contains('disabled')).toBe(false);
   });
 
+  it('分页 -> 点击首页测试', () => {
+    spyOn(component, 'onPage');
+
+    /* 获取首页按钮并点击 */
+    const formTest = new FormTest(fixture);
+    formTest.clickButton('ul.pagination > li:first-child');
+
+    expect(component.onPage).toHaveBeenCalledWith(0);
+  });
+
+  it('onPage 功能测试', () => {
+    component.params.page = 4;
+    component.onPage(3);
+    expect(component.params.page).toEqual(3);
+  });
+
+  it('onPage调用测试', () => {
+    spyOn(component, 'loadData');
+    component.onPage(0);
+    expect(component.loadData).toHaveBeenCalled();
+  });
+
+
+  it('上一页 样式测试', () => {
+    /* 获取首页按钮 */
+    const debugElement = fixture.debugElement.query(By.css('ul.pagination > li:nth-child(2)'));
+    const htmlliElement: HTMLLIElement = debugElement.nativeElement;
+    console.log(htmlliElement);
+
+    /* 当前页为首页，则添加禁用样式 */
+    component.params.page = 0;
+    fixture.detectChanges();
+    expect(htmlliElement.classList.contains('disabled')).toBe(true);
+
+    /* 当前页非首页，则移除禁用样式 */
+    component.params.page = 1;
+    fixture.detectChanges();
+    expect(htmlliElement.classList.contains('disabled')).toBe(false);
+  });
+
+
+  it('上一页 点击测试', () => {
+    spyOn(component, 'onPage');
+
+    component.params.page = 3;
+    fixture.detectChanges();
+
+    /* 获取首页按钮 */
+    const formTest = new FormTest(fixture);
+    formTest.clickButton('ul.pagination > li:nth-child(2)');
+
+    expect(component.onPage).toHaveBeenCalledWith(2);
+  });
 });
