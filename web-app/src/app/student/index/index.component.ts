@@ -10,6 +10,9 @@ import {StudentService} from '../../service/student.service';
   styleUrls: ['./index.component.sass']
 })
 export class IndexComponent implements OnInit {
+  /* 分页数据 */
+  pages: Array<number>;
+
   /* 查询参数 */
   params = {
     page: 0,
@@ -30,6 +33,35 @@ export class IndexComponent implements OnInit {
   }
 
   /**
+   * 生成分页数据
+   * @param currentPage 当前页
+   * @param totalPages 总页数
+   */
+  makePagesByTotalPages(currentPage: number, totalPages: number): Array<number> {
+    if (totalPages > 0) {
+      /* 总页数小于5 */
+      if (totalPages <= 5) {
+        return this.makePages(0, totalPages - 1);
+      }
+
+      /* 首2页 */
+      if (currentPage < 2) {
+        return this.makePages(0, 4);
+      }
+
+      /* 尾2页 */
+      if (currentPage > totalPages - 3) {
+        return this.makePages(totalPages - 5, totalPages - 1);
+      }
+
+      /* 总页数大于5，且为中间页码*/
+      return this.makePages(currentPage - 2, currentPage + 2);
+    }
+
+    return new Array();
+  }
+
+  /**
    * 加载数据
    */
   loadData() {
@@ -44,7 +76,21 @@ export class IndexComponent implements OnInit {
     this.studentService.page(queryParams)
       .subscribe((response: { totalPages: number, content: Array<Student> }) => {
         this.pageStudent = response;
+        this.pages = this.makePagesByTotalPages(this.params.page, response.totalPages);
       });
+  }
+
+  /**
+   * 生成页码
+   * @param begin 开始页码
+   * @param end 结束页码
+   */
+  makePages(begin: number, end: number): Array<number> {
+    const result = new Array<number>();
+    for (; begin <= end; begin++) {
+      result.push(begin);
+    }
+    return result;
   }
 
   ngOnInit() {

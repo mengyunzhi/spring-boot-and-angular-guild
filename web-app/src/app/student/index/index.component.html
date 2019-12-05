@@ -38,13 +38,15 @@
         <li class="page-item" [ngClass]="{'disabled': params.page === 0}" (click)="onPage(params.page - 1)">
           <span class="page-link">上一页</span>
         </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active">
-        <span class="page-link">2<span class="sr-only">(current)</span></span>
+        <li class="page-item" [ngClass]="{'active': params.page === page}" *ngFor="let page of pages" (click)="onPage(page)">
+          <a class="page-link" href="#" *ngIf="page !== params.page">{{page + 1}}</a>
+          <span class="page-link" *ngIf="page === params.page">{{page + 1}}<span class="sr-only">(current)</span></span>
         </li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">Next</a>
+        <li class="page-item" [ngClass]="{'disabled': params.page === pageStudent.totalPages - 1}" (click)="onPage(params.page + 1)">
+          <a class="page-link" href="#">下一页</a>
+        </li>
+        <li class="page-item" [ngClass]="{'disabled': params.page === pageStudent.totalPages - 1}" (click)="onPage(pageStudent.totalPages - 1)">
+          <a class="page-link" href="#">尾页</a>
         </li>
       </ul>
     </nav>
