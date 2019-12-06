@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {AddComponent} from './add/add.component';
 import {StudentRoutingModule} from './student-routing.module';
 import { KlassSelectComponent } from './klass-select/klass-select.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../core/core.module';
 import { IndexComponent } from './index/index.component';
 
@@ -14,6 +14,7 @@ import { IndexComponent } from './index/index.component';
     CommonModule,
     StudentRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     CoreModule
   ]
 })

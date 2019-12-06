@@ -19,6 +19,7 @@ export class NavComponent implements OnInit {
     this.title = '教务管理系统';
     this.menus.push({url: 'teacher', name: '教师管理'});
     this.menus.push({url: 'klass', name: '班级管理'});
+    this.menus.push({url: 'student', name: '学生管理'});
   }
 
 }
