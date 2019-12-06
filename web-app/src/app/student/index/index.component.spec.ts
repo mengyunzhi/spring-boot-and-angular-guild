@@ -422,7 +422,7 @@ describe('Student -> IndexComponent', () => {
       });
   });
 
-  fit('点击单选对多选值的影响', () => {
+  it('点击单选对多选值的影响', () => {
     for (let i = 2; i <= 3; i++) {
       /* 依次点击2个student的单选 */
       const trDebugElement = fixture.debugElement.query(By.css(`table tr:nth-child(${i})`));
