@@ -356,4 +356,89 @@ describe('Student -> IndexComponent', () => {
   });
 
 
+  it('单选', () => {
+    const trDebugElement = fixture.debugElement.query(By.css(`table tr:nth-child(2)`));
+    const checkBoxDebugElement = trDebugElement.query(By.css('input[type=checkBox]'));
+    const checkBoxElement: HTMLInputElement = checkBoxDebugElement.nativeElement;
+    console.log(checkBoxElement);
+    console.log(checkBoxElement.checked);
+    expect(checkBoxElement.checked).toBe(false);
+
+    /* 设置第一个学生的isCheck为true，并重新渲染V层 */
+    component.pageStudent.content[0].isChecked = true;
+    fixture.detectChanges();
+
+    /* 断言checkBox的值为true */
+    expect(checkBoxElement.checked).toEqual(true);
+  });
+
+  it('单选点击后绑定到C层', () => {
+    const trDebugElement = fixture.debugElement.query(By.css(`table tr:nth-child(2)`));
+    const checkBoxDebugElement = trDebugElement.query(By.css('input[type=checkBox]'));
+    const checkBoxElement: HTMLInputElement = checkBoxDebugElement.nativeElement;
+    expect(checkBoxElement.checked).toBe(false);
+
+    /* 点击第一个学生对应的checkBox，断言checkBox的值是true，同时对应学生的相应字段值为true */
+    checkBoxElement.click();
+    expect(checkBoxElement.checked).toBeTruthy();
+    expect(component.pageStudent.content[0].isChecked).toBeTruthy();
+  });
+
+  it('多选C->V', () => {
+    /* 获取到 全选 并断言其状态为：未选中 */
+    const trDebugElement = fixture.debugElement.query(By.css(`table tr:nth-child(1)`));
+    const checkBoxDebugElement = trDebugElement.query(By.css('input[type=checkBox]'));
+    const checkBoxElement: HTMLInputElement = checkBoxDebugElement.nativeElement;
+    expect(component.isCheckedAll).toBeFalsy();
+    expect(checkBoxElement.checked).toBe(false);
+
+    /* 改变C层的值，断言绑定生效 */
+    component.isCheckedAll = true;
+    fixture.detectChanges();
+    expect(component.isCheckedAll).toBeTruthy();
+  });
+
+  it('多选V->C', () => {
+    /* 获取到 全选 并断言其状态为：未选中 */
+    const trDebugElement = fixture.debugElement.query(By.css(`table tr:nth-child(1)`));
+    const checkBoxDebugElement = trDebugElement.query(By.css('input[type=checkBox]'));
+    const checkBoxElement: HTMLInputElement = checkBoxDebugElement.nativeElement;
+    expect(component.isCheckedAll).toBeFalsy();
+
+    /* 第一次点击 false -> true */
+    checkBoxElement.click();
+    expect(component.isCheckedAll).toBeTruthy();
+    component.pageStudent.content
+      .forEach((student) => {
+        expect(student.isChecked).toBeTruthy();
+      });
+
+    /* 再次点击 true -> false */
+    checkBoxElement.click();
+    expect(component.isCheckedAll).toBeFalsy();
+    component.pageStudent.content
+      .forEach((student) => {
+        expect(student.isChecked).toBeFalsy();
+      });
+  });
+
+  fit('点击单选对多选值的影响', () => {
+    for (let i = 2; i <= 3; i++) {
+      /* 依次点击2个student的单选 */
+      const trDebugElement = fixture.debugElement.query(By.css(`table tr:nth-child(${i})`));
+      const checkBoxDebugElement = trDebugElement.query(By.css('input[type=checkBox]'));
+      const checkBoxElement: HTMLInputElement = checkBoxDebugElement.nativeElement;
+      checkBoxElement.click();
+
+      /* 按是否为最后一个学生进行不同的断言 */
+      if (i === 3) {
+        expect(component.isCheckedAll).toBeTruthy();
+        checkBoxElement.click();
+        expect(component.isCheckedAll).toBeFalsy();
+      } else {
+        expect(component.isCheckedAll).toBeFalsy();
+      }
+    }
+  });
+
 });

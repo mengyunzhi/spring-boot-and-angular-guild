@@ -7,6 +7,8 @@ export class Student {
   klass: Klass;
   name: string;
   sno: string;
+  /* 是否选中，辅助实现V层的 选中 功能 */
+  isChecked = false;
 
   constructor(data?: { id?: number; klass?: Klass; name?: string; sno?: string }) {
     if (!data) {

@@ -13,6 +13,9 @@ export class IndexComponent implements OnInit {
   /* 分页数据 */
   pages: Array<number>;
 
+  /* 是否全部选中 */
+  isCheckedAll = false;
+
   /* 查询参数 */
   params = {
     page: 0,
@@ -95,6 +98,39 @@ export class IndexComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
+  }
+
+  /**
+   * 全选框被用户点击时触发
+   * @param $event checkBox弹射值
+   */
+  onCheckAllBoxChange($event: Event) {
+    const checkbox = $event.target as HTMLInputElement;
+    this.isCheckedAll = checkbox.checked;
+    this.pageStudent.content.forEach((student) => {
+      student.isChecked = checkbox.checked;
+    });
+  }
+
+  /**
+   * 单选框被用户点击时
+   * @param $event 弹射值
+   * @param student 当前学生
+   */
+  onCheckBoxChange($event: Event, student: Student) {
+    const checkbox = $event.target as HTMLInputElement;
+    student.isChecked = checkbox.checked;
+    if (checkbox.checked) {
+      let checkedAll = true;
+      this.pageStudent.content.forEach((value) => {
+        if (!value.isChecked) {
+          checkedAll = false;
+        }
+      });
+      this.isCheckedAll = checkedAll;
+    } else {
+      this.isCheckedAll = false;
+    }
   }
 
   /**
