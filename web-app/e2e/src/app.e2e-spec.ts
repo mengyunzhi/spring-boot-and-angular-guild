@@ -1,5 +1,5 @@
-import { AppPage } from './app.po';
-import { browser, logging } from 'protractor';
+import {AppPage} from './app.po';
+import {browser, logging} from 'protractor';
 
 describe('workspace-project App', () => {
   let page: AppPage;
@@ -10,7 +10,8 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('web-app app is running!');
+    expect(page.getTitleText()).toEqual('欢迎使用河北工业大学教务管理系统');
+    browser.sleep(5000);
   });
 
   afterEach(async () => {
