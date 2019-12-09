@@ -1,7 +1,8 @@
-<h2>编辑教师</h2>
+<h2>新增学生</h2>
 <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
   <label>姓名：<input name="name" formControlName="name"/></label>
   <label>学号：<input name="sno" formControlName="sno"/></label>
   <label>班级：<app-klass-select (selected)="onSelectKlass($event)"></app-klass-select></label>
   <button type="submit">保存</button>
 </form>
+<a style="display: none" routerLink="./../" #linkToIndex>返回学生列表页</a>

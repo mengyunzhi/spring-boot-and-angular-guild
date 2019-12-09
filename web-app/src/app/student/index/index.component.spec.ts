@@ -166,12 +166,23 @@ describe('Student -> IndexComponent', () => {
     expect(component.onPage).toHaveBeenCalledWith(0);
   });
 
-  it('onPage 功能测试', () => {
+  fit('onPage 功能测试', () => {
     spyOn(component, 'loadData');
     component.params.page = 4;
     component.onPage(3);
     expect(component.params.page).toEqual(3);
     expect(component.loadData).toHaveBeenCalled();
+
+    /* 越界测试：期望不改变当前页码值，loadData仅被前面的代码调用了1次（本次未调用）*/
+    component.onPage(-1);
+    expect(component.params.page).toEqual(3);
+    expect(component.loadData).toHaveBeenCalledTimes(1);
+
+    /* 越界测试：期望不改变当前页码值，loadData仅被前面的代码调用了1次（本次未调用）*/
+    component.pageStudent.totalPages = 5;
+    component.onPage(5);
+    expect(component.params.page).toEqual(3);
+    expect(component.loadData).toHaveBeenCalledTimes(1);
   });
 
   it('上一页 样式测试', () => {
