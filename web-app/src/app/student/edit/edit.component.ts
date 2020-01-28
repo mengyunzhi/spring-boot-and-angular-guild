@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Student} from '../../norm/entity/student';
 
+
+
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
