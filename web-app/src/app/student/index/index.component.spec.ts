@@ -166,7 +166,7 @@ describe('Student -> IndexComponent', () => {
     expect(component.onPage).toHaveBeenCalledWith(0);
   });
 
-  fit('onPage 功能测试', () => {
+  it('onPage 功能测试', () => {
     spyOn(component, 'loadData');
     component.params.page = 4;
     component.onPage(3);
