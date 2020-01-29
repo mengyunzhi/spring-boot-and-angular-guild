@@ -2,8 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditComponent } from './edit.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {CoreModule} from '../../core/core.module';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {Component, OnInit} from '@angular/core';
 import {KlassSelectComponent} from '../klass-select/klass-select.component';
 
@@ -26,8 +24,6 @@ fdescribe('student -> EditComponent', () => {
       declarations: [ EditComponent, KlassSelectComponentStub ],
       imports: [
         ReactiveFormsModule,
-        CoreModule,
-        HttpClientTestingModule
       ]
     })
     .compileComponents();
