@@ -51,4 +51,13 @@ export class StudentService {
     const url = 'http://localhost:8080/Student';
     return this.httpClient.post<Student>(url, student);
   }
+
+
+  /**
+   * 获取某个学生
+   * @param id 学生ID
+   */
+  getById(id: number): Observable<Student> {
+    return null;
+  }
 }
