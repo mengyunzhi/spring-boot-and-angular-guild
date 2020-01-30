@@ -22,12 +22,12 @@ class KlassSelectComponentStub extends KlassSelectComponent implements OnInit {
   }
 }
 
-fdescribe('student -> EditComponent', () => {
+describe('student -> EditComponent', () => {
   let component: EditComponent;
   let fixture: ComponentFixture<EditComponent>;
 
   beforeEach(async(() => {
-    const studentServiceSpy: SpyObj<StudentService> = jasmine.createSpyObj<StudentService>(['getById']);
+    const studentServiceSpy: SpyObj<StudentService> = jasmine.createSpyObj<StudentService>(['getById', 'update']);
     TestBed.configureTestingModule({
       declarations: [EditComponent, KlassSelectComponentStub],
       imports: [
@@ -91,5 +91,52 @@ fdescribe('student -> EditComponent', () => {
     expect(nameInput.value).toEqual(student.name);
     const snoInput: HTMLInputElement = fixture.debugElement.query(By.css('input[name="sno"]')).nativeElement;
     expect(snoInput.value).toEqual(student.sno);
+  });
+
+  it('点击保存按钮', () => {
+    spyOn(component, 'onSubmit');
+    const button: HTMLButtonElement = fixture.debugElement.query(By.css('button')).nativeElement;
+    button.click();
+    expect(component.onSubmit).toHaveBeenCalled();
+  });
+
+  it('onSubmit', () => {
+    // 设置formGroup的值
+    const name = Math.random().toString(36).slice(-10);
+    const sno = Math.random().toString(36).slice(-10);
+    component.formGroup.get('name').setValue(name);
+    component.formGroup.get('sno').setValue(sno);
+
+    // 设置班级选择组件的值
+    // todo: 在官方文档中暂未找到相应的示例代码
+
+    // 调用onSubmit方法
+    component.onSubmit();
+
+    // 断言已使用formGroup及班级选择组件的值更新了学生信息
+    expect(component.student.name).toBe(name);
+    expect(component.student.sno).toBe(sno);
+    // expect(component.student.klass).toBe(null); todo: 原则上这里要测试发射值
+
+    // 断言调用 向M层传入更新的学生ID及更新的学生信息 方法
+  });
+
+  it('向M层传入更新的学生ID及更新的学生信息', () => {
+    // 在M层对应的方法上建立间谍 （见foreach)
+    // 为间谍准备返回值
+    const studentService: SpyObj<StudentService> = TestBed.get(StudentService);
+    const student = new Student();
+    studentService.update.and.returnValue(of(student));
+
+    // 方法调用
+    const student1 = new Student();
+    student1.id = Math.floor(Math.random() * 100);
+    component.update(student1);
+
+    // 断言间谍调用成功，间谍接收参数符合预期
+    expect(studentService.update).toHaveBeenCalledWith(student1.id, student1);
+
+    // 断言接收返回值符合预期
+    expect(component.student).toBe(student);
   });
 });

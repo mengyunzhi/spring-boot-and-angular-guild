@@ -5,6 +5,7 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {Student} from '../norm/entity/student';
 import {Klass} from '../norm/entity/Klass';
 import {HttpRequest} from '@angular/common/http';
+import {of} from 'rxjs';
 
 describe('service -> StudentService', () => {
   let service: StudentService;
@@ -100,5 +101,55 @@ describe('service -> StudentService', () => {
     req.flush(new Student({id: -1}));
 
     expect(called).toBe(true);
+  });
+
+  it('getById', () => {
+    // 调用方法并订阅
+    const id = Math.floor(Math.random() * 100);
+    let resultStudent;
+    service.getById(id)
+      .subscribe((student) => {
+        resultStudent = student;
+      });
+
+    // 断言发起了http请求
+    const httpTestingController: HttpTestingController = TestBed.get(HttpTestingController);
+    const req = httpTestingController.expectOne(`http://localhost:8080/Student/${id}`);
+
+    // 断言请求的参数及方法符合预期
+    expect(req.request.method).toEqual('GET');
+
+    // 模拟返回数据
+    const mockStudent = new Student();
+    req.flush(mockStudent);
+
+    // 断言接收数据
+    expect(resultStudent).toBe(mockStudent);
+  });
+
+  it('update', () => {
+    // 调用方法并订阅
+    const student = new Student();
+    student.id = Math.floor(Math.random() * 100);
+    let resultStudent;
+    service.update(student.id, student)
+      .subscribe(result => {
+        resultStudent = result;
+      });
+
+    // 断言发起了http请求
+    const httpTestingController: HttpTestingController = TestBed.get(HttpTestingController);
+    const req = httpTestingController.expectOne(`http://localhost:8080/Student/${student.id}`);
+
+    // 断言请求的参数及方法符合预期
+    expect(req.request.method).toEqual('PUT');
+    expect(req.request.body).toBe(student);
+
+    // 模拟返回数据
+    const mockStudent = new Student();
+    req.flush(mockStudent);
+
+    // 断言接收数据
+    expect(resultStudent).toBe(mockStudent);
   });
 });

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Student} from '../../norm/entity/student';
 import {ActivatedRoute} from '@angular/router';
@@ -10,6 +10,10 @@ import {StudentService} from '../../service/student.service';
   styleUrls: ['./edit.component.sass']
 })
 export class EditComponent implements OnInit {
+  /* 使用ViewChild在C层中使用V层中定义的 跳转到首页按钮 */
+  @ViewChild('linkToIndex', {static: true})
+  linkToIndex: ElementRef;
+
   formGroup: FormGroup;
   student: Student = new Student();
   constructor(private activatedRoute: ActivatedRoute,
@@ -25,6 +29,23 @@ export class EditComponent implements OnInit {
       name: new FormControl(''),
       sno: new FormControl('')
     });
+  }
+
+  onSubmit() {
+    this.student.name = this.formGroup.get('name').value;
+    this.student.sno = this.formGroup.get('sno').value;
+    this.student.klass = this.student.klass;
+  }
+
+  /**
+   * 更新学生
+   * @param student 学生
+   */
+  update(student: Student) {
+    this.studentService.update(student.id, student)
+      .subscribe((result) => {
+        this.student = result;
+      });
   }
 
   /**

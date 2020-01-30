@@ -58,6 +58,17 @@ export class StudentService {
    * @param id 学生ID
    */
   getById(id: number): Observable<Student> {
-    return null;
+    const url = `http://localhost:8080/Student/${id}`;
+    return this.httpClient.get<Student>(url);
+  }
+
+  /**
+   * 更新学生
+   * @param id id
+   * @param student 学生
+   */
+  update(id: number, student: Student): Observable<Student> {
+    const url = `http://localhost:8080/Student/${id}`;
+    return this.httpClient.put<Student>(url, student);
   }
 }
