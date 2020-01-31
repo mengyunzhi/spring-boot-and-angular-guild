@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 /**
  * 学生控制器
  */
@@ -30,6 +32,16 @@ public class StudentController {
                 sno,
                 klassId,
                 PageRequest.of(page, size));
+    }
+
+    /**
+     * 通过ID查询学生
+     * @param id 学生ID
+     * @return 学生
+     */
+    @GetMapping("{id}")
+    public Student getById(@PathVariable Long id) {
+        return this.studentService.findById(id);
     }
 
     @PostMapping

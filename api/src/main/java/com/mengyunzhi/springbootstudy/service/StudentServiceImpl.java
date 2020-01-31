@@ -33,4 +33,10 @@ public class StudentServiceImpl implements StudentService {
         klass.setId(klassId);
         return this.studentRepository.findAll(name, sno, klass, pageable);
     }
+
+    @Override
+    public Student findById(@NotNull Long id) {
+        Assert.notNull(id, "id不能为null");
+        return this.studentRepository.findById(id).get();
+    }
 }

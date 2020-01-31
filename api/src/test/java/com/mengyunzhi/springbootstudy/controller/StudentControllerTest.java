@@ -199,4 +199,36 @@ public class StudentControllerTest {
         LinkedHashMap klassHashMap = (LinkedHashMap) studentHashMap.get("klass");
         Assertions.assertThat(klassHashMap.get("id")).isEqualTo(1);
     }
+
+    @Test
+    public void getById() throws Exception {
+        // 准备传入的参数数据
+        Long id = new Random().nextLong();
+
+        // 准备服务器的返回数据
+        Student student = new Student();
+        student.setId(id);
+        student.setSno(new RandomString(6).nextString());
+        student.setName(new RandomString(8).nextString());
+        student.setKlass(new Klass());
+        student.getKlass().setId(new Random().nextLong());
+        Mockito.when(this.studentService.findById(Mockito.anyLong())).thenReturn(student);
+
+        // 按接口规范，向url以规定的参数发起get请求。
+        // 断言请求返回了正常的状态码
+        String url = "/Student/" + id.toString() ;
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get(url))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(id))
+                .andExpect(MockMvcResultMatchers.jsonPath("sno").value(student.getSno()))
+                .andExpect(MockMvcResultMatchers.jsonPath("name").value(student.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("klass.id").value(student.getKlass().getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("klass.name").value(student.getKlass().getName()))
+                .andReturn();
+
+        // 断言C层进行了数据转发
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(this.studentService).findById(longArgumentCaptor.capture());
+        Assertions.assertThat(longArgumentCaptor.getValue()).isEqualTo(id);
+    }
 }

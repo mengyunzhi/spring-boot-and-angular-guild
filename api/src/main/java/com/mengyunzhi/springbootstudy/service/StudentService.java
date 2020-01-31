@@ -36,4 +36,11 @@ public interface StudentService {
      * @return
      */
     Page<Student> findAll(String name, String sno, Long klassId, @NotNull Pageable pageable);
+
+    /**
+     * 查找学生
+     * @param id 学生ID
+     * @return 学生
+     */
+    Student findById(@NotNull Long id);
 }

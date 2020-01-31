@@ -20,6 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 
 @SpringBootTest
@@ -125,5 +127,35 @@ public class StudentServiceImplTest {
             Assertions.assertThat(e.getMessage()).isEqualTo("Pageable不能为null");
             throw e;
         }
+    }
+
+    /**
+     * 参数为null测试
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void findByIdNullArgument() {
+        this.studentService.findById(null);
+    }
+
+    /**
+     * 调用测试
+     */
+    @Test
+    public void findById() {
+        // 准备调用时的参数及返回值
+        Long id =  new Random().nextLong();
+        Student mockReturnStudent = new Student();
+        Mockito.when(this.studentRepository.findById(id)).thenReturn(Optional.of(mockReturnStudent));
+
+        // 发起调用
+        Student student = this.studentService.findById(id);
+
+        // 断言返回值与预期相同
+        Assertions.assertThat(student).isEqualTo(mockReturnStudent);
+
+        // 断言接收到的参数与预期相同
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(this.studentRepository).findById(longArgumentCaptor.capture());
+        Assertions.assertThat(longArgumentCaptor.getValue()).isEqualTo(id);
     }
 }
