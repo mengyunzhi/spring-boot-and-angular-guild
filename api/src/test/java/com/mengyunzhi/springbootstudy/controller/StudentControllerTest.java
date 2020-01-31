@@ -5,6 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.mengyunzhi.springbootstudy.entity.Klass;
 import com.mengyunzhi.springbootstudy.entity.Student;
 import com.mengyunzhi.springbootstudy.service.StudentService;
+import org.apache.tomcat.util.json.JSONParser;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import net.minidev.json.JSONArray;
@@ -119,6 +120,7 @@ public class StudentControllerTest {
 
     /**
      * 请求参数测试
+     *
      * @throws Exception
      */
     @Test
@@ -205,7 +207,7 @@ public class StudentControllerTest {
         // 准备传入的参数数据
         Long id = new Random().nextLong();
 
-        // 准备服务器的返回数据
+        // 准备服务层替身被调用后的返回数据
         Student student = new Student();
         student.setId(id);
         student.setSno(new RandomString(6).nextString());
@@ -216,7 +218,7 @@ public class StudentControllerTest {
 
         // 按接口规范，向url以规定的参数发起get请求。
         // 断言请求返回了正常的状态码
-        String url = "/Student/" + id.toString() ;
+        String url = "/Student/" + id.toString();
         MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get(url))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(id))
@@ -226,9 +228,61 @@ public class StudentControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("klass.name").value(student.getKlass().getName()))
                 .andReturn();
 
-        // 断言C层进行了数据转发
+        // 断言C层进行了数据转发（替身接收的参数值符合预期）
         ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
         Mockito.verify(this.studentService).findById(longArgumentCaptor.capture());
         Assertions.assertThat(longArgumentCaptor.getValue()).isEqualTo(id);
+    }
+
+    @Test
+    public void update() throws Exception {
+        // 准备传入参数的数据
+        Long id = new Random().nextLong();
+
+        // 准备服务层替身被调用后的返回数据
+        Student mockResult = new Student();
+        mockResult.setId(id);
+        mockResult.setName(RandomString.make(6));
+        mockResult.setSno(RandomString.make(4));
+        mockResult.setKlass(new Klass());
+        mockResult.getKlass().setId(new Random().nextLong());
+        mockResult.getKlass().setName(RandomString.make(10));
+        Mockito.when(this.studentService.update(Mockito.anyLong(), Mockito.any(Student.class))).thenReturn(mockResult);
+
+        JSONObject studentJsonObject = new JSONObject();
+        JSONObject klassJsonObject = new JSONObject();
+
+        studentJsonObject.put("sno", RandomString.make(4));
+        studentJsonObject.put("name", RandomString.make(6));
+        klassJsonObject.put("id", new Random().nextLong());
+        klassJsonObject.put("name", RandomString.make(6));
+        studentJsonObject.put("klass", klassJsonObject);
+
+
+        // 按接口规范发起请求，断言状态码正常，接收的数据符合预期
+        String url = "/Student/" + id.toString();
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.put(url)
+                        .content(studentJsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(id))
+                .andExpect(MockMvcResultMatchers.jsonPath("sno").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("name").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("klass.id").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("klass.name").exists())
+        ;
+
+        // 断言C层进行了数据转发（替身接收的参数值符合预期)
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Student> studentArgumentCaptor = ArgumentCaptor.forClass(Student.class);
+
+        Mockito.verify(this.studentService).update(longArgumentCaptor.capture(), studentArgumentCaptor.capture());
+        Assertions.assertThat(longArgumentCaptor.getValue()).isEqualTo(id);
+        Student resultStudent = studentArgumentCaptor.getValue();
+        Assertions.assertThat(resultStudent.getSno()).isEqualTo(studentJsonObject.get("sno"));
+        Assertions.assertThat(resultStudent.getName()).isEqualTo(studentJsonObject.get("name"));
+        Assertions.assertThat(resultStudent.getKlass().getId()).isEqualTo(klassJsonObject.get("id"));
+        Assertions.assertThat(resultStudent.getKlass().getName()).isEqualTo(klassJsonObject.get("name"));
     }
 }

@@ -43,4 +43,12 @@ public interface StudentService {
      * @return 学生
      */
     Student findById(@NotNull Long id);
+
+    /**
+     * 更新学生
+     * @param id ID
+     * @param student 更新的学生信息
+     * @return 学生
+     */
+    Student update(Long id, Student student);
 }

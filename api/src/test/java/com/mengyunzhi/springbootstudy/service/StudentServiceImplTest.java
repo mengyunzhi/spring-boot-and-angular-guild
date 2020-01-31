@@ -4,6 +4,7 @@ import com.mengyunzhi.springbootstudy.entity.Klass;
 import com.mengyunzhi.springbootstudy.entity.Student;
 import com.mengyunzhi.springbootstudy.repository.StudentRepository;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -143,7 +144,7 @@ public class StudentServiceImplTest {
     @Test
     public void findById() {
         // 准备调用时的参数及返回值
-        Long id =  new Random().nextLong();
+        Long id = new Random().nextLong();
         Student mockReturnStudent = new Student();
         Mockito.when(this.studentRepository.findById(id)).thenReturn(Optional.of(mockReturnStudent));
 
@@ -157,5 +158,73 @@ public class StudentServiceImplTest {
         ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
         Mockito.verify(this.studentRepository).findById(longArgumentCaptor.capture());
         Assertions.assertThat(longArgumentCaptor.getValue()).isEqualTo(id);
+    }
+
+    @Test
+    public void update() {
+        // 准备替身及调用替身后的模拟返回值
+        // 第一个替身（间谍）
+        Long id = new Random().nextLong();
+        Student mockResultStudent = new Student();
+        Mockito.when(this.studentRepository.findById(id)).thenReturn(Optional.of(mockResultStudent));
+
+        // 第二个替身. 1. 由this.studentService clone出一个替身，该替身具有原studentService中的所有功能及属性
+        StudentService studentServiceSpy = Mockito.spy(this.studentService);
+
+        // 由于updateFields方法并不存在于StudentService接口上，所以预对updateFields设置替身
+        // 则需要对类型进行转制转换
+        // （虽然注入时声明的为StudentService，但实际注入的为StudentServiceImpl，这是强制转换的基础）
+        StudentServiceImpl studentServiceImplSpy = (StudentServiceImpl) studentServiceSpy;
+        Student mockResultStudent1 = new Student();
+        Mockito.doReturn(mockResultStudent1).when(studentServiceImplSpy).updateFields(Mockito.any(Student.class), Mockito.any(Student.class));
+
+        // 调用update方法测试
+        Student student = new Student();
+        Student resultStudent = studentServiceImplSpy.update(id, student);
+
+        // 断言传入第一个替身参数符合预期
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(this.studentRepository).findById(longArgumentCaptor.capture());
+        Assertions.assertThat(longArgumentCaptor.getValue()).isEqualTo(id);
+
+        // 断言第二个替身参数符合预期：参数1为传入update方法的学生，参数2为替身1的返回值
+        ArgumentCaptor<Student> studentArgumentCaptor = ArgumentCaptor.forClass(Student.class);
+        ArgumentCaptor<Student> studentArgumentCaptor1 = ArgumentCaptor.forClass(Student.class);
+        Mockito.verify(studentServiceImplSpy).updateFields(studentArgumentCaptor.capture(), studentArgumentCaptor1.capture());
+        Assertions.assertThat(studentArgumentCaptor.getValue()).isEqualTo(student);
+        Assertions.assertThat(studentArgumentCaptor1.getValue()).isEqualTo(mockResultStudent);
+
+        // 断言返回值就是第二个替身的返回值
+        Assertions.assertThat(resultStudent).isEqualTo(mockResultStudent1);
+    }
+
+    @Test
+    public void updateFields() {
+        // 准备替身
+        Student mockResultStudent = new Student();
+        Mockito.when(this.studentRepository.save(Mockito.any(Student.class))).thenReturn(mockResultStudent);
+
+        // 调用updateFields方法
+        StudentServiceImpl studentServiceImpl = (StudentServiceImpl) this.studentService;
+        Student newStudent = new Student();
+        newStudent.setKlass(new Klass());
+        newStudent.setName(RandomString.make(8));
+        newStudent.setSno(RandomString.make(4));
+        Student oldStudent = new Student();
+        oldStudent.setId(new Random().nextLong());
+
+        Student resultStudent = studentServiceImpl.updateFields(newStudent, oldStudent);
+
+        // 断言传入替身的参数符合预期（更新了学生信息）
+        ArgumentCaptor<Student> studentArgumentCaptor = ArgumentCaptor.forClass(Student.class);
+        Mockito.verify(this.studentRepository).save(studentArgumentCaptor.capture());
+        Student editedStudent = studentArgumentCaptor.getValue();
+        Assertions.assertThat(editedStudent.getId()).isEqualTo(oldStudent.getId());
+        Assertions.assertThat(editedStudent.getName()).isEqualTo(newStudent.getName());
+        Assertions.assertThat(editedStudent.getSno()).isEqualTo(newStudent.getSno());
+        Assertions.assertThat(editedStudent.getKlass()).isEqualTo(newStudent.getKlass());
+
+        // 断言返回值符合预期
+        Assertions.assertThat(resultStudent).isEqualTo(mockResultStudent);
     }
 }

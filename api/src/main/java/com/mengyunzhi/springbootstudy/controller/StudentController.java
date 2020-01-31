@@ -7,9 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import javax.websocket.server.PathParam;
-
 /**
  * 学生控制器
  */
@@ -48,5 +45,10 @@ public class StudentController {
     @ResponseStatus(HttpStatus.CREATED)
     public Student save(@RequestBody Student student) {
         return studentService.save(student);
+    }
+
+    @PutMapping("{id}")
+    public Student update(@PathVariable Long id, @RequestBody Student student) {
+        return this.studentService.update(id, student);
     }
 }

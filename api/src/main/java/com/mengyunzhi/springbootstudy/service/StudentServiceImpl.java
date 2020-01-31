@@ -39,4 +39,23 @@ public class StudentServiceImpl implements StudentService {
         Assert.notNull(id, "id不能为null");
         return this.studentRepository.findById(id).get();
     }
+
+    @Override
+    public Student update(Long id, Student student) {
+        Student oldStudent = this.studentRepository.findById(id).get();
+        return this.updateFields(student,oldStudent);
+    }
+
+    /**
+     * 更新学生
+     * @param newStudent 新学生信息
+     * @param oldStudent 老学生信息
+     * @return 更新后的学生信息
+     */
+    public Student updateFields(Student newStudent, Student oldStudent) {
+        oldStudent.setSno(newStudent.getSno());
+        oldStudent.setName(newStudent.getName());
+        oldStudent.setKlass(newStudent.getKlass());
+        return this.studentRepository.save(oldStudent);
+    }
 }
