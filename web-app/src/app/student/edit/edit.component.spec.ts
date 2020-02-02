@@ -100,7 +100,7 @@ describe('student -> EditComponent', () => {
     expect(component.onSubmit).toHaveBeenCalled();
   });
 
-  it('onSubmit', () => {
+  fit('onSubmit', () => {
     // 设置formGroup的值
     const name = Math.random().toString(36).slice(-10);
     const sno = Math.random().toString(36).slice(-10);
@@ -109,6 +109,9 @@ describe('student -> EditComponent', () => {
 
     // 设置班级选择组件的值
     // todo: 在官方文档中暂未找到相应的示例代码
+
+    // 设置update方法替身
+    spyOn(component, 'update');
 
     // 调用onSubmit方法
     component.onSubmit();
@@ -119,6 +122,7 @@ describe('student -> EditComponent', () => {
     // expect(component.student.klass).toBe(null); todo: 原则上这里要测试发射值
 
     // 断言调用 向M层传入更新的学生ID及更新的学生信息 方法
+    expect(component.update).toHaveBeenCalledWith(component.student);
   });
 
   it('向M层传入更新的学生ID及更新的学生信息', () => {

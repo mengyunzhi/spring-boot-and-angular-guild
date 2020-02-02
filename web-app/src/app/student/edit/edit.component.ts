@@ -3,6 +3,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {Student} from '../../norm/entity/student';
 import {ActivatedRoute} from '@angular/router';
 import {StudentService} from '../../service/student.service';
+import {Klass} from '../../norm/entity/Klass';
 
 @Component({
   selector: 'app-edit',
@@ -35,6 +36,7 @@ export class EditComponent implements OnInit {
     this.student.name = this.formGroup.get('name').value;
     this.student.sno = this.formGroup.get('sno').value;
     this.student.klass = this.student.klass;
+    this.update(this.student);
   }
 
   /**
@@ -45,6 +47,7 @@ export class EditComponent implements OnInit {
     this.studentService.update(student.id, student)
       .subscribe((result) => {
         this.student = result;
+        this.linkToIndex.nativeElement.click();
       });
   }
 
@@ -71,4 +74,11 @@ export class EditComponent implements OnInit {
     });
   }
 
+  /**
+   * 选择班级
+   * @param $event 班级
+   */
+  onSelectKlass($event: Klass) {
+    this.student.klass = $event;
+  }
 }
