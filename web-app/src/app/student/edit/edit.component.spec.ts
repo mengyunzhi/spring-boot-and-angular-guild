@@ -100,7 +100,7 @@ describe('student -> EditComponent', () => {
     expect(component.onSubmit).toHaveBeenCalled();
   });
 
-  fit('onSubmit', () => {
+  it('onSubmit', () => {
     // 设置formGroup的值
     const name = Math.random().toString(36).slice(-10);
     const sno = Math.random().toString(36).slice(-10);
