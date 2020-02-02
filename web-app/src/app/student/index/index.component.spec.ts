@@ -10,6 +10,7 @@ import {StudentStubService} from '../../service/student-stub.service';
 import {By} from '@angular/platform-browser';
 import {Klass} from '../../norm/entity/Klass';
 import {FormTest} from '../../testing/FormTest';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('Student -> IndexComponent', () => {
   let component: IndexComponent;
@@ -22,7 +23,8 @@ describe('Student -> IndexComponent', () => {
         ReactiveFormsModule,
         FormsModule,
         CoreModule,
-        HttpClientTestingModule],
+        HttpClientTestingModule,
+        RouterTestingModule],
       providers: [
         {provide: StudentService, useClass: StudentStubService}
       ]
@@ -68,7 +70,7 @@ describe('Student -> IndexComponent', () => {
     expect(table.rows.item(row).cells.item(col++).innerText).toBe('testStudent');
     expect(table.rows.item(row).cells.item(col++).innerText).toBe('testStudentSno');
     expect(table.rows.item(row).cells.item(col++).innerText).toBe('testKlass');
-    expect(table.rows.item(row).cells.item(col++).innerText).toBe('');
+    expect(table.rows.item(row).cells.item(col++).innerText).toBe('编辑');
   });
 
   it('选择班级组件', () => {
@@ -135,8 +137,8 @@ describe('Student -> IndexComponent', () => {
     console.log(text);
 
     /* 断言绑定了C层的分页值 */
-    expect(text).toContain(`第${component.params.page}/${component.pageStudent.totalPages}页`);
-    expect(text).toContain(`每页${component.params.size}条`);
+    expect(text).toContain(`第${component.params.page + 1}/${component.pageStudent.totalPages}页`);
+    expect(text).toContain(`第${component.params.page + 1}/${component.pageStudent.totalPages}页 每页${component.params.size}条`);
   });
 
   it('分页 -> 首页样式测试', () => {
