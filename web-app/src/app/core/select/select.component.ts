@@ -15,12 +15,12 @@ export class SelectComponent implements OnInit {
   objectSelect: FormControl;
 
   @Output() selected = new EventEmitter<Select>();
-  @Input() object: { id: number };
+  @Input() set object(object: { id: number }) {
+    this.objectSelect = new FormControl(object);
+  }
   @Input() url: string;
-
   constructor(private httpClient: HttpClient) {
   }
-
 
   /**
    * 获取所有的对象，并传给V层
