@@ -47,6 +47,11 @@ public class Student {
         }
     }
 
+    @PreUpdate
+    public void perUpdate() {
+        this.perPersis();
+    }
+
     public Long getId() {
         return id;
     }

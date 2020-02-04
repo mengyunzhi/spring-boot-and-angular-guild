@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.TransactionSystemException;
 
 
 @SpringBootTest
@@ -71,7 +72,6 @@ public class StudentTest {
         this.studentRepository.save(this.student);
     }
 
-
     @Test
     public void snoLengthTest() {
         for (int i = 1; i <= 255; i++) {
@@ -114,6 +114,49 @@ public class StudentTest {
             called = true;
         }
         Assertions.assertThat(called).isTrue();
+    }
+
+
+    @Test(expected = TransactionSystemException.class)
+    public void updateNameLengthToLongTest() {
+        // 第一次调用save执行保存操作
+        this.studentRepository.save(student);
+        this.student.setName("123456789012345678901");
+
+        // 第二次调用save执行更新操作
+        this.studentRepository.save(student);
+    }
+
+    @Test(expected = TransactionSystemException.class)
+    public void updateNameLengthToShortTest() {
+        this.studentRepository.save(student);
+        this.student.setName("1");
+        this.studentRepository.save(student);
+    }
+
+    /**
+     * 先后执行100次随机学号
+     * 当学号为6位时，更新成功
+     * 当学号不是6位时，更新时发生异常
+     */
+    @Test
+    public void updateSnoLengthTest() {
+        this.studentRepository.save(student);
+
+        for (int i = 1; i <= 100; i++) {
+            this.student.setSno(RandomString.make(i));
+            boolean called = false;
+            try {
+                this.studentRepository.save(student);
+            } catch (TransactionSystemException e) {
+                called = true;
+            }
+            if (i != 6) {
+                Assertions.assertThat(called).isTrue();
+            } else {
+                Assertions.assertThat(called).isFalse();
+            }
+        }
     }
 
 }
