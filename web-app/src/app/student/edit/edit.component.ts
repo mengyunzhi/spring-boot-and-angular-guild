@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Student} from '../../norm/entity/student';
 import {ActivatedRoute} from '@angular/router';
 import {StudentService} from '../../service/student.service';
@@ -17,18 +17,27 @@ export class EditComponent implements OnInit {
 
   formGroup: FormGroup;
   student: Student = new Student();
+
   constructor(private activatedRoute: ActivatedRoute,
-              private studentService: StudentService) { }
+              private studentService: StudentService) {
+  }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe((param: {id: number}) => {
+    this.activatedRoute.params.subscribe((param: { id: number }) => {
       this.student.id = param.id;
       this.loadStudentById(this.student.id);
     });
 
     this.formGroup = new FormGroup({
-      name: new FormControl(''),
-      sno: new FormControl('')
+      name: new FormControl('', [
+        Validators.minLength(2),
+        Validators.maxLength(10),
+        Validators.required]),
+      sno: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(6),
+        Validators.minLength(6)
+      ])
     });
   }
 
@@ -80,5 +89,15 @@ export class EditComponent implements OnInit {
    */
   onSelectKlass($event: Klass) {
     this.student.klass = $event;
+  }
+
+  /**
+   * 是否禁用保存按钮
+   * 当姓名或学号任意字段验证失败时，均返回true
+   * @param formGroup 表单组
+   * @return true 禁用按钮；false 启用按钮
+   */
+  disableSubmitButton(formGroup: FormGroup): boolean {
+    return formGroup.get('name').errors !== null || formGroup.get('sno').errors !== null;
   }
 }

@@ -1,8 +1,14 @@
 <h2>编辑学生</h2>
 <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
-  <label>姓名：<input name="name" formControlName="name"/></label>
-  <label>学号：<input name="sno" formControlName="sno"/></label>
+  <label>姓名：<input name="name" formControlName="name" required/></label>
+  <label>学号：<input name="sno" formControlName="sno" required/></label>
   <label>班级：<app-klass-select [klass]="student.klass" (selected)="onSelectKlass($event)"></app-klass-select></label>
-  <button type="submit">保存</button>
+  <button type="submit" [disabled]="disableSubmitButton(formGroup)">保存</button>
+  <div class="alert-warning" *ngIf="formGroup.get('name').errors || formGroup.get('sno').errors">
+    <p *ngIf="formGroup.get('name').errors?.minlength">输入的姓名过短</p>
+    <p *ngIf="formGroup.get('name').errors?.maxlength">输入的姓名过长</p>
+    <p *ngIf="formGroup.get('name').errors?.required">姓名不能为空</p>
+    <p *ngIf="formGroup.get('sno').errors">输入的学号格式不正确</p>
+  </div>
 </form>
 <a style="display: none" routerLink="./../../" #linkToIndex>返回学生列表页</a>
