@@ -69,7 +69,19 @@ export class IndexComponent implements OnInit {
    * @param student 学生
    */
   onDelete(student: Student): void {
-
+    const result = confirm('这里是提示的消息');
+    if (result) {
+      this.studentService.deleteById(student.id)
+        .subscribe(() => {
+          this.pageStudent.content.forEach((value, key) => {
+            if (value === student) {
+              this.pageStudent.content.splice(key, 1);
+            }
+          });
+        });
+    } else {
+      console.log('用户点击了取消');
+    }
   }
 
   /**

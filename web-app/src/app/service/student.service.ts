@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Student} from '../norm/entity/student';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -76,7 +76,7 @@ export class StudentService {
    * 删除学生
    * @param id 学生id
    */
-  deleteById(id: number) {
+  deleteById(id: number): Observable<void> {
     return null;
   }
 }

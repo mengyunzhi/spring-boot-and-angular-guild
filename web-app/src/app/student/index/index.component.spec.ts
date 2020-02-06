@@ -11,6 +11,7 @@ import {By} from '@angular/platform-browser';
 import {Klass} from '../../norm/entity/Klass';
 import {FormTest} from '../../testing/FormTest';
 import {RouterTestingModule} from '@angular/router/testing';
+import {BehaviorSubject} from 'rxjs';
 
 describe('Student -> IndexComponent', () => {
   let component: IndexComponent;
@@ -463,6 +464,42 @@ describe('Student -> IndexComponent', () => {
 
     // 断言onDelete替身被成功调用
     expect(component.onDelete).toHaveBeenCalledWith(component.pageStudent.content[0]);
+  });
+
+  it('onDelete -> 取消删除', () => {
+    // 替身及模似数据的准备
+    const studentService: StudentService = TestBed.get(StudentService);
+    spyOn(studentService, 'deleteById');
+    spyOn(window, 'confirm').and.returnValue(false);
+
+    // 调用方法
+    component.onDelete(null);
+
+    // 断言
+    expect(studentService.deleteById).toHaveBeenCalledTimes(0);
+  });
+
+  fit('onDelete -> 确认删除', () => {
+    // 替身及模似数据的准备
+    const studentService = TestBed.get(StudentService);
+    const subject = new BehaviorSubject<void>(undefined);
+    spyOn(studentService, 'deleteById').and.returnValue(subject);
+    spyOn(window, 'confirm').and.returnValue(true);
+
+    // 调用方法，删除第一个学生
+    const student = component.pageStudent.content[0];
+    component.onDelete(student);
+
+    // 断言
+    expect(studentService.deleteById).toHaveBeenCalledWith(student.id);
+    // 断言删除的学生成功的由前台移除
+    let found = false;
+    component.pageStudent.content.forEach(value => {
+      if (value === student) {
+        found = true;
+      }
+    });
+    expect(found).toBeFalsy();
   });
 
 });

@@ -29,4 +29,7 @@ export class StudentStubService {
     };
     return of(mockResult);
   }
+
+  deleteById(id: number) {
+  }
 }
