@@ -55,7 +55,7 @@ describe('Student -> IndexComponent', () => {
     expect(queryParam.size).toEqual(component.params.size);
   });
 
-  fit('组件初始化V层渲染', () => {
+  it('组件初始化V层渲染', () => {
     /* 获取table元素 */
     const tableElement = fixture.debugElement.query(By.css('table'));
     const table: HTMLTableElement = tableElement.nativeElement;
@@ -454,7 +454,7 @@ describe('Student -> IndexComponent', () => {
     }
   });
 
-  fit('删除按钮点击测试', () => {
+  it('删除按钮点击测试', () => {
     // 将C层的onDelete方法设置为替身
     spyOn(component, 'onDelete');
 
