@@ -65,6 +65,14 @@ export class IndexComponent implements OnInit {
   }
 
   /**
+   * 删除学生
+   * @param student 学生
+   */
+  onDelete(student: Student): void {
+
+  }
+
+  /**
    * 加载数据
    */
   loadData() {

@@ -28,7 +28,10 @@
     <td>{{student.name}}</td>
     <td>{{student.sno}}</td>
     <td>{{student.klass.name}}</td>
-    <td><a routerLink="./edit/{{student.id}}" class="btn btn-sm btn-info">编辑</a> </td>
+    <td>
+      <a routerLink="./edit/{{student.id}}" class="btn btn-sm btn-info">编辑</a>
+      <button (click)="onDelete(student)" class="btn btn-sm btn-danger">删除</button>
+    </td>
   </tr>
 </table>
 <div *ngIf="pageStudent" class="row">

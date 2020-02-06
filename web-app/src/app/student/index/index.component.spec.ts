@@ -55,7 +55,7 @@ describe('Student -> IndexComponent', () => {
     expect(queryParam.size).toEqual(component.params.size);
   });
 
-  it('组件初始化V层渲染', () => {
+  fit('组件初始化V层渲染', () => {
     /* 获取table元素 */
     const tableElement = fixture.debugElement.query(By.css('table'));
     const table: HTMLTableElement = tableElement.nativeElement;
@@ -70,7 +70,7 @@ describe('Student -> IndexComponent', () => {
     expect(table.rows.item(row).cells.item(col++).innerText).toBe('testStudent');
     expect(table.rows.item(row).cells.item(col++).innerText).toBe('testStudentSno');
     expect(table.rows.item(row).cells.item(col++).innerText).toBe('testKlass');
-    expect(table.rows.item(row).cells.item(col++).innerText).toBe('编辑');
+    expect(table.rows.item(row).cells.item(col++).innerText).toBe('编辑删除');
   });
 
   it('选择班级组件', () => {
@@ -452,6 +452,17 @@ describe('Student -> IndexComponent', () => {
         expect(component.isCheckedAll).toBeFalsy();
       }
     }
+  });
+
+  fit('删除按钮点击测试', () => {
+    // 将C层的onDelete方法设置为替身
+    spyOn(component, 'onDelete');
+
+    // 点击第一行的删除按钮
+    FormTest.clickButton(fixture, '#root1 > table > tr:nth-child(2) > td:nth-child(6) > button');
+
+    // 断言onDelete替身被成功调用
+    expect(component.onDelete).toHaveBeenCalledWith(component.pageStudent.content[0]);
   });
 
 });

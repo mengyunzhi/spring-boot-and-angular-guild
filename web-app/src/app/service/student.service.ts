@@ -71,4 +71,12 @@ export class StudentService {
     const url = `http://localhost:8080/Student/${id}`;
     return this.httpClient.put<Student>(url, student);
   }
+
+  /**
+   * 删除学生
+   * @param id 学生id
+   */
+  deleteById(id: number) {
+    return null;
+  }
 }

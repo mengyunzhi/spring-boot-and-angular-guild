@@ -59,7 +59,7 @@ export class FormTest<T> {
   static clickButton(fixture: ComponentFixture<any>, cssSelector: string): boolean {
     const selectorElement = this.getSelectorElement(fixture, cssSelector);
     if (isNull(selectorElement)) {
-      return false;
+      throw new Error(`未找到css选器${cssSelector}对应的html元素`);
     }
     const htmlButtonElement: HTMLButtonElement = selectorElement.nativeElement;
     htmlButtonElement.click();
