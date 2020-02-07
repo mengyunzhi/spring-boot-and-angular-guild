@@ -77,6 +77,7 @@ export class StudentService {
    * @param id 学生id
    */
   deleteById(id: number): Observable<void> {
-    return null;
+    const url = `http://localhost:8080/Student/${id}`;
+    return this.httpClient.delete<void>(url);
   }
 }

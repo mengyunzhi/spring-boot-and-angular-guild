@@ -152,4 +152,26 @@ describe('service -> StudentService', () => {
     // 断言接收数据
     expect(resultStudent).toBe(mockStudent);
   });
+
+  it('deleteById', () => {
+    // 模拟数据及替身的准备
+   // 调用方法
+    const id = Math.floor(Math.random() * 100);
+    let called = false;
+    service.deleteById(id).subscribe(() => {
+      called = true;
+    });
+
+    // 断言发起了http请求
+    const httpTestingController: HttpTestingController = TestBed.get(HttpTestingController);
+    const req = httpTestingController.expectOne(`http://localhost:8080/Student/${id}`);
+
+    // 请求的方法为delete
+    expect(req.request.method).toEqual('DELETE');
+
+    // 返回值为可被观察者，该观察者携带的内容为`void`
+    expect(called).toBeFalsy();
+    req.flush(of());
+    expect(called).toBeTruthy();
+  });
 });
