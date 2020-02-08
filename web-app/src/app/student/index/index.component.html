@@ -1,3 +1,13 @@
+<div *ngIf="showPopWindow" class="mask"></div>
+<div *ngIf="showPopWindow" class="popWindow">
+  <h5>请您再次确认</h5>
+  <hr>
+  <div class="text-right">
+    <button class="btn btn-sm btn-warning" type="button" (click)="cancel()">取消</button>
+    <button class="btn btn-sm btn-primary" type="button" (click)="confirm()">确认</button>
+  </div>
+</div>
+
 <form (ngSubmit)="onQuery()">
   <label>姓名：<input name="name" [formControl]="params.name" type="text"/></label>
   <label>学号：<input name="sno" [formControl]="params.sno" type="text"/></label>

@@ -16,6 +16,9 @@ export class IndexComponent implements OnInit {
   /* 是否全部选中 */
   isCheckedAll = false;
 
+  /*缓存要删除的学生*/
+  cacheDeleteStudent: Student;
+
   /* 查询参数 */
   params = {
     page: 0,
@@ -30,6 +33,7 @@ export class IndexComponent implements OnInit {
     totalPages: 0,
     content: new Array<Student>()
   };
+  showPopWindow = false;
 
   constructor(private studentService: StudentService) {
     console.log(studentService);
@@ -69,19 +73,23 @@ export class IndexComponent implements OnInit {
    * @param student 学生
    */
   onDelete(student: Student): void {
-    const result = confirm('这里是提示的消息');
-    if (result) {
-      this.studentService.deleteById(student.id)
-        .subscribe(() => {
-          this.pageStudent.content.forEach((value, key) => {
-            if (value === student) {
-              this.pageStudent.content.splice(key, 1);
-            }
-          });
+    this.cacheDeleteStudent = student;
+    this.showPopWindow = true;
+  }
+
+  /**
+   * 删除缓存的学生后，隐藏弹窗
+   */
+  deleteCacheStudent() {
+    const student = this.cacheDeleteStudent;
+    this.studentService.deleteById(student.id)
+      .subscribe(() => {
+        this.pageStudent.content.forEach((value, key) => {
+          if (value === student) {
+            this.pageStudent.content.splice(key, 1);
+          }
         });
-    } else {
-      console.log('用户点击了取消');
-    }
+      });
   }
 
   /**
@@ -173,5 +181,20 @@ export class IndexComponent implements OnInit {
   /* 选择班级 */
   onSelectKlass(klass: Klass) {
     this.params.klass = klass;
+  }
+
+  /**
+   * 点击确认
+   */
+  confirm() {
+    this.deleteCacheStudent();
+    this.showPopWindow = false;
+  }
+
+  /**
+   * 点击取消
+   */
+  cancel() {
+    this.showPopWindow = false;
   }
 }
