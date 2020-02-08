@@ -12,6 +12,7 @@ import {Klass} from '../../norm/entity/Klass';
 import {FormTest} from '../../testing/FormTest';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BehaviorSubject} from 'rxjs';
+import {Student} from '../../norm/entity/student';
 
 describe('Student -> IndexComponent', () => {
   let component: IndexComponent;
@@ -460,7 +461,7 @@ describe('Student -> IndexComponent', () => {
     spyOn(component, 'onDelete');
 
     // 点击第一行的删除按钮
-    FormTest.clickButton(fixture, '#root1 > table > tr:nth-child(2) > td:nth-child(6) > button');
+    FormTest.clickButton(fixture, 'table > tr:nth-child(2) > td:nth-child(6) > button');
 
     // 断言onDelete替身被成功调用
     expect(component.onDelete).toHaveBeenCalledWith(component.pageStudent.content[0]);
@@ -479,19 +480,30 @@ describe('Student -> IndexComponent', () => {
     expect(studentService.deleteById).toHaveBeenCalledTimes(0);
   });
 
-  fit('onDelete -> 确认删除', () => {
+  it('onDelete -> 确认删除', () => {
+    // 替身及模似数据的准备
+    component.showPopWindow = false;
+    const student = new Student();
+
+    // 调用
+    component.onDelete(student);
+
+    // 断言
+    expect(component.cacheDeleteStudent).toBeTruthy(student);
+    expect(component.showPopWindow).toBeTruthy();
+  });
+
+  it('deleteCacheStudent', () => {
     // 替身及模似数据的准备
     const studentService = TestBed.get(StudentService);
     const subject = new BehaviorSubject<void>(undefined);
     spyOn(studentService, 'deleteById').and.returnValue(subject);
-    spyOn(window, 'confirm').and.returnValue(true);
 
     // 调用方法，删除第一个学生
     const student = component.pageStudent.content[0];
-    component.onDelete(student);
+    component.cacheDeleteStudent = student;
+    component.deleteCacheStudent();
 
-    // 断言
-    expect(studentService.deleteById).toHaveBeenCalledWith(student.id);
     // 断言删除的学生成功的由前台移除
     let found = false;
     component.pageStudent.content.forEach(value => {
@@ -500,6 +512,30 @@ describe('Student -> IndexComponent', () => {
       }
     });
     expect(found).toBeFalsy();
+  });
+
+  it('confirm', () => {
+    // 替身及数据准备
+    spyOn(component, 'deleteCacheStudent');
+    component.showPopWindow = true;
+
+    // 调用
+    component.confirm();
+
+    // 断言
+    expect(component.showPopWindow).toBeFalsy();
+    expect(component.deleteCacheStudent).toHaveBeenCalled();
+  });
+
+  it('cancel', () => {
+    // 替身及数据准备
+    component.showPopWindow = true;
+
+    // 调用
+    component.cancel();
+
+    // 断言
+    expect(component.showPopWindow).toBeFalsy();
   });
 
 });

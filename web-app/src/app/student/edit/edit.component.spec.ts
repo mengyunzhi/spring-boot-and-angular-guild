@@ -95,6 +95,9 @@ describe('student -> EditComponent', () => {
 
   it('点击保存按钮', () => {
     spyOn(component, 'onSubmit');
+    component.formGroup.get('name').setValue('123');
+    component.formGroup.get('sno').setValue('123421');
+    fixture.detectChanges();
     const button: HTMLButtonElement = fixture.debugElement.query(By.css('button')).nativeElement;
     button.click();
     expect(component.onSubmit).toHaveBeenCalled();
