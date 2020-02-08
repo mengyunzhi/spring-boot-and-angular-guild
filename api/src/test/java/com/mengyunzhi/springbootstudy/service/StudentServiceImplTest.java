@@ -5,6 +5,7 @@ import com.mengyunzhi.springbootstudy.entity.Student;
 import com.mengyunzhi.springbootstudy.repository.StudentRepository;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -226,5 +227,33 @@ public class StudentServiceImplTest {
 
         // 断言返回值符合预期
         Assertions.assertThat(resultStudent).isEqualTo(mockResultStudent);
+    }
+
+    /**
+     * 参数验证
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void deleteByIdValidate() {
+        this.studentService.deleteById(null);
+    }
+
+    /**
+     * 功能测试
+     */
+    @Test
+    public void deleteById() {
+        // 替身及模拟返回值准备
+        Long id = new Random().nextLong();
+
+        // studentRepository.deleteById方法的返回值类型为void。
+        // Mockito已默认为返回值为void默认生了返回值，无需对此替身单元做设置
+
+        // 调用方法
+        this.studentService.deleteById(id);
+
+        // 预测以期望的参数值调用了期望的方法
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(this.studentRepository).deleteById(longArgumentCaptor.capture());
+        Assert.assertEquals(longArgumentCaptor.getValue(), id);
     }
 }

@@ -51,4 +51,10 @@ public class StudentController {
     public Student update(@PathVariable Long id, @RequestBody Student student) {
         return this.studentService.update(id, student);
     }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id) {
+        this.studentService.deleteById(id);
+    }
 }

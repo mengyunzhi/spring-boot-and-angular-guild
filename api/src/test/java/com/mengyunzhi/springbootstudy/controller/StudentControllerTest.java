@@ -5,11 +5,11 @@ import com.jayway.jsonpath.JsonPath;
 import com.mengyunzhi.springbootstudy.entity.Klass;
 import com.mengyunzhi.springbootstudy.entity.Student;
 import com.mengyunzhi.springbootstudy.service.StudentService;
-import org.apache.tomcat.util.json.JSONParser;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import net.minidev.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -284,5 +284,24 @@ public class StudentControllerTest {
         Assertions.assertThat(resultStudent.getName()).isEqualTo(studentJsonObject.get("name"));
         Assertions.assertThat(resultStudent.getKlass().getId()).isEqualTo(klassJsonObject.get("id"));
         Assertions.assertThat(resultStudent.getKlass().getName()).isEqualTo(klassJsonObject.get("name"));
+    }
+
+    @Test
+    public void deleteById() throws Exception {
+        // 准备替身、传入数据及返回数据
+        Long id = new Random().nextLong();
+
+        // deleteById方法返回类型为void，故无需对替身进行设置
+
+        // 向指定的地址发起请求，并断言返回状态码204
+        String url = "/Student/" + id.toString();
+        this.mockMvc.perform(MockMvcRequestBuilders.delete(url))
+                .andExpect(MockMvcResultMatchers.status().is(204))
+        ;
+
+        // 断言调用方法符合预期
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(this.studentService).deleteById(longArgumentCaptor.capture());
+        Assert.assertEquals(longArgumentCaptor.getValue(), id);
     }
 }

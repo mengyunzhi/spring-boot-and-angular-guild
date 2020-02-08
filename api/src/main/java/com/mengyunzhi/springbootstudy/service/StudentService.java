@@ -51,4 +51,10 @@ public interface StudentService {
      * @return 学生
      */
     Student update(Long id, Student student);
+
+    /**
+     * 删除学生
+     * @param id 学生id
+     */
+    void deleteById(Long id);
 }

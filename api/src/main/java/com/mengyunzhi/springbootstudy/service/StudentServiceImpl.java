@@ -46,6 +46,12 @@ public class StudentServiceImpl implements StudentService {
         return this.updateFields(student,oldStudent);
     }
 
+    @Override
+    public void deleteById(@NotNull Long id) {
+        Assert.notNull(id, "传入的ID不能为NULL");
+        this.studentRepository.deleteById(id);
+    }
+
     /**
      * 更新学生
      * @param newStudent 新学生信息
