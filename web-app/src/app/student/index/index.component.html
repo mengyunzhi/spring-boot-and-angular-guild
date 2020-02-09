@@ -19,7 +19,7 @@
 
 <div class="row">
   <div class="col text-right">
-    <a class="btn btn-primary" routerLink="./add">新增学生</a>
+    <a class="btn btn-primary" routerLink="./add"><span class="oi oi-plus"></span>新增学生</a>
   </div>
 </div>
 
@@ -39,8 +39,8 @@
     <td>{{student.sno}}</td>
     <td>{{student.klass.name}}</td>
     <td>
-      <a routerLink="./edit/{{student.id}}" class="btn btn-sm btn-info">编辑</a>
-      <button (click)="onDelete(student)" class="btn btn-sm btn-danger">删除</button>
+      <a routerLink="./edit/{{student.id}}" class="btn btn-sm btn-info"><span class="oi oi-pencil"></span>编辑</a>
+      <button (click)="onDelete(student)" class="btn btn-sm btn-danger"><span class="oi oi-trash"></span>删除</button>
     </td>
   </tr>
 </table>
