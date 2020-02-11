@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashSet;
@@ -36,16 +37,20 @@ public class TokenFilter extends HttpFilter {
             // 如果无效则分发送的token
             token = this.makeToken();
             logger.info("原token无效，发布的新的token为" + token);
+
+            // 设置header中的auth-token
+            request = new HttpServletRequestTokenWrapper(request, token);
         }
 
         logger.info("在控制器被调用以前执行");
+
+        // 在确立响应信息前，设置响应的header值
+        response.setHeader(TOKEN_KEY, token);
 
         // 转发数据。spring开始调用控制器中的特定方法
         chain.doFilter(request, response);
 
         logger.info("在控制器被调用以后执行");
-
-        // 为http响应加入新token后返回
     }
 
     /**
@@ -71,4 +76,28 @@ public class TokenFilter extends HttpFilter {
 
         return this.tokens.contains(token);
     }
+
+    /**
+     * 带有请求token的Http请求
+     */
+    class HttpServletRequestTokenWrapper extends HttpServletRequestWrapper {
+        String token;
+        private HttpServletRequestTokenWrapper(HttpServletRequest request) {
+            super(request);
+        }
+
+        public HttpServletRequestTokenWrapper(HttpServletRequest request, String token) {
+            this(request);
+            this.token = token;
+        }
+
+        @Override
+        public String getHeader(String name) {
+            if (TOKEN_KEY.equals(name)) {
+                return this.token;
+            }
+            return super.getHeader(name);
+        }
+    }
 }
+
