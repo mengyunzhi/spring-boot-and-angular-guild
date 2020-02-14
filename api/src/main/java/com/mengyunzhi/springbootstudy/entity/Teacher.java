@@ -19,6 +19,7 @@ public class Teacher {
     private String email;
     private Long createTime;
     private Long updateTime;
+    private String password;
 
     public Teacher() {
     }
@@ -77,5 +78,13 @@ public class Teacher {
 
     public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

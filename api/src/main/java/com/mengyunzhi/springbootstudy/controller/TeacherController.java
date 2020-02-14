@@ -1,6 +1,7 @@
 package com.mengyunzhi.springbootstudy.controller;
 
 import com.mengyunzhi.springbootstudy.entity.Teacher;
+import com.mengyunzhi.springbootstudy.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class TeacherController {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    TeacherService teacherService;
 
     @DeleteMapping("{id}")
     @CrossOrigin("*")
@@ -142,5 +146,11 @@ public class TeacherController {
                 newTeacher.getName(), newTeacher.getUsername(), newTeacher.getEmail(), newTeacher.getSex().toString(), id
         );
         this.jdbcTemplate.update(sql);
+    }
+
+
+    @PostMapping("login")
+    public boolean login(@RequestBody Teacher teacher) {
+        return this.teacherService.login(teacher.getUsername(), teacher.getPassword());
     }
 }
