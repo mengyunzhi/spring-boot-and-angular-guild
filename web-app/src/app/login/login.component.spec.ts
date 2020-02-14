@@ -1,8 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LoginComponent } from './login.component';
+import {LoginComponent} from './login.component';
 import {FormTest} from '../testing/FormTest';
 import {ReactiveFormsModule} from '@angular/forms';
+import {TeacherService} from '../service/teacher.service';
+import {of} from 'rxjs';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -10,12 +13,13 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
+      declarations: [LoginComponent],
       imports: [
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        HttpClientTestingModule
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -43,10 +47,26 @@ describe('LoginComponent', () => {
     expect(passwordValue).toEqual('testPassword');
   });
 
-  fit('点击提交按钮', () => {
+  it('点击提交按钮', () => {
     spyOn(component, 'onSubmit');
     FormTest.clickButton(fixture, 'button');
 
     expect(component.onSubmit).toHaveBeenCalled();
+  });
+
+  fit('onSubmit', () => {
+    // 获取teacherService实例，并为其login方法设置替身
+    const teacherService = TestBed.get(TeacherService) as TeacherService;
+    spyOn(teacherService, 'login').and.returnValue(of(true));
+    spyOn(console, 'log');
+
+    // 添加测试数据并调用
+    component.formGroup.get('username').setValue('testUsername');
+    component.formGroup.get('password').setValue('testPassword');
+    component.onSubmit();
+
+    // 断言成功调用teacherService的login方法
+    expect(teacherService.login).toHaveBeenCalledWith('testUsername', 'testPassword');
+    expect(console.log).toHaveBeenCalledWith(true);
   });
 });
