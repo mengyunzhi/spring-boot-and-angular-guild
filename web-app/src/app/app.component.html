@@ -1,5 +1,6 @@
-<app-nav></app-nav>
+<app-nav *ngIf="isLogin"></app-nav>
 <div class="container">
-  <router-outlet></router-outlet>
+  <app-login *ngIf="!isLogin"></app-login>
+  <router-outlet *ngIf="isLogin"></router-outlet>
 </div>
 <app-footer></app-footer>

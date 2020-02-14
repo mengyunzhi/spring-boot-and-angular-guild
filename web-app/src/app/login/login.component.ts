@@ -27,7 +27,11 @@ export class LoginComponent implements OnInit {
     const username = this.formGroup.get('username').value;
     const password = this.formGroup.get('password').value;
     this.teacherService.login(username, password).subscribe(result => {
-      console.log(result);
+      if (result) {
+        this.teacherService.setIsLogin(true);
+      } else {
+        console.log('用户名密码错误');
+      }
     });
   }
 }
