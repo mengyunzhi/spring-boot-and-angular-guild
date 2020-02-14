@@ -19,7 +19,7 @@ public class Teacher {
     private String email;
     private Long createTime;
     private Long updateTime;
-    private String password;
+    private String password = "yunzhi";
 
     public Teacher() {
     }
