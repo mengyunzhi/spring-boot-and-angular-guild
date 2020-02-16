@@ -6,6 +6,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {TeacherService} from '../service/teacher.service';
 import {of} from 'rxjs';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {TestModule} from '../test/test.module';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -16,7 +17,7 @@ describe('LoginComponent', () => {
       declarations: [LoginComponent],
       imports: [
         ReactiveFormsModule,
-        HttpClientTestingModule
+        TestModule
       ]
     })
       .compileComponents();
@@ -54,10 +55,11 @@ describe('LoginComponent', () => {
     expect(component.onSubmit).toHaveBeenCalled();
   });
 
-  fit('onSubmit', () => {
+  it('onSubmit', () => {
     // 获取teacherService实例，并为其login方法设置替身
     const teacherService = TestBed.get(TeacherService) as TeacherService;
-    spyOn(teacherService, 'login').and.returnValue(of(true));
+    spyOn(teacherService, 'login').and.returnValues(of(true), of(false));
+    spyOn(teacherService, 'setIsLogin');
     spyOn(console, 'log');
 
     // 添加测试数据并调用
@@ -67,6 +69,10 @@ describe('LoginComponent', () => {
 
     // 断言成功调用teacherService的login方法
     expect(teacherService.login).toHaveBeenCalledWith('testUsername', 'testPassword');
-    expect(console.log).toHaveBeenCalledWith(true);
+    expect(teacherService.setIsLogin).toHaveBeenCalledWith(true);
+
+    // teacherService.login返回假时
+    component.onSubmit();
+    expect(console.log).toHaveBeenCalledWith('用户名密码错误');
   });
 });

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {TeacherService} from '../service/teacher.service';
 
 @Component({
   selector: 'app-nav',
@@ -12,7 +13,7 @@ export class NavComponent implements OnInit {
   /*菜单项*/
   menus = new Array<{ url: string; name: string }>();
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private teacherService: TeacherService) {
   }
 
   ngOnInit() {
@@ -22,4 +23,7 @@ export class NavComponent implements OnInit {
     this.menus.push({url: 'student', name: '学生管理'});
   }
 
+  onLogout() {
+    this.teacherService.setIsLogin(false);
+  }
 }
