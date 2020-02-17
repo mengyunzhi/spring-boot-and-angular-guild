@@ -8,17 +8,10 @@ import {CacheService} from '../service/cache.service';
 export class AuthTokenInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const reqClone = req.clone({
-      setHeaders: {'auth-token': CacheService.getAuthToken()}
+      // 请在测试时将af1c0c77-67d0-4ec2-8321-2f88e32f76af替换为后台发送的有效token
+      setHeaders: {'auth-token': 'af1c0c77-67d0-4ec2-8321-2f88e32f76af'}
     });
-    return next.handle(reqClone).pipe(map((httpEvent) => {
-      if (httpEvent instanceof HttpResponse) {
-        const httpResponse = httpEvent as HttpResponse<any>;
-        const authToken = httpResponse.headers.get('auth-token');
-        CacheService.setAuthToken(authToken);
-      }
-
-      return httpEvent;
-    }));
+    return next.handle(reqClone);
   }
 }
 
