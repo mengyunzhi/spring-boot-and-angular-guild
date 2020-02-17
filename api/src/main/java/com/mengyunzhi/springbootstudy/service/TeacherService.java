@@ -7,6 +7,7 @@ import com.mengyunzhi.springbootstudy.entity.Teacher;
  * @author 梦云智
  */
 public interface TeacherService {
+
     /**
      * 用户登录
      * @param username 用户名

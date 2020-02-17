@@ -9,16 +9,20 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import javax.servlet.http.HttpServletRequest;
+
 import static org.junit.Assert.*;
 
 public class TeacherServiceImplTest {
     private TeacherServiceImpl teacherService;
     private TeacherRepository teacherRepository;
+    private HttpServletRequest httpServletRequest;
 
     @Before
     public void before() {
         this.teacherRepository = Mockito.mock(TeacherRepository.class);
-        TeacherServiceImpl teacherService = new TeacherServiceImpl(this.teacherRepository);
+        this.httpServletRequest = Mockito.mock(HttpServletRequest.class);
+        TeacherServiceImpl teacherService = new TeacherServiceImpl(this.teacherRepository, this.httpServletRequest);
         this.teacherService = Mockito.spy(teacherService);
     }
 
