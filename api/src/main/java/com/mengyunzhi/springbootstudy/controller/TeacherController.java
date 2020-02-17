@@ -35,6 +35,8 @@ public class TeacherController {
     @GetMapping
     @CrossOrigin("*")
     public List<Teacher> getAll() {
+        logger.info("调用TeacherController的getAll方法");
+
         /*初始化不固定大小的数组*/
         List<Teacher> teachers = new ArrayList<>();
 
