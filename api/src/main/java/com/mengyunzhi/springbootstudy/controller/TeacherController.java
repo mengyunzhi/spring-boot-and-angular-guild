@@ -155,4 +155,14 @@ public class TeacherController {
     public boolean login(@RequestBody Teacher teacher) {
         return this.teacherService.login(teacher.getUsername(), teacher.getPassword());
     }
+
+    @GetMapping("logout")
+    public void login() {
+        this.teacherService.logout();
+    }
+
+    @GetMapping("me")
+    public Teacher me() {
+        return this.teacherService.me();
+    }
 }

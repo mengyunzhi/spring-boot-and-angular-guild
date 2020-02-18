@@ -22,14 +22,14 @@ import java.util.UUID;
 @WebFilter
 public class TokenFilter extends HttpFilter {
     private final static Logger logger = LoggerFactory.getLogger(TokenFilter.class);
-    private String TOKEN_KEY = "auth-token";
+    public static String TOKEN_KEY = "auth-token";
     /** 存储已分发过的令牌 */
     private HashSet<String> tokens = new HashSet<>();
 
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         // 获取 header中的token
-        String token = request.getHeader(this.TOKEN_KEY);
+        String token = request.getHeader(TOKEN_KEY);
         logger.info("获取到的token为" + token);
 
         // 有效性判断
