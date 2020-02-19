@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Teacher} from '../norm/entity/Teacher';
 import {TeacherService} from '../service/teacher.service';
 
@@ -10,13 +10,18 @@ import {TeacherService} from '../service/teacher.service';
 export class PersonalCenterComponent implements OnInit {
   /** 绑定到V层 */
   public teacher: Teacher;
-  constructor(private teacherService: TeacherService) { }
-
-  ngOnInit() {
-    // 调用M层的相关方法
-    this.teacherService.me().subscribe((teacher) => {
-      this.teacher = teacher;
-    });
+  constructor(private teacherService: TeacherService) {
+    console.log('construct');
   }
 
+  ngOnInit() {
+    console.log('ngInit');
+    // 调用M层的相关方法
+    this.teacherService.me().subscribe((teacher) => {
+      console.log('return teacher');
+      this.teacher = teacher;
+      console.log('set return teacher');
+    });
+    console.log('done');
+  }
 }
