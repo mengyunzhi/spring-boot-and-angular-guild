@@ -23,14 +23,4 @@ public interface StudentService {
      * @return 分页数据
      */
     Page<Student> findAll(Pageable pageable);
-
-    /**
-     * 综合查询
-     * @param name containing 姓名
-     * @param sno beginWith 学号
-     * @param klassId equal 班级ID
-     * @param pageable
-     * @return
-     */
-    Page<Student> findAll(String name, String sno, Long klassId, Pageable pageable);
 }
