@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {Teacher} from '../norm/entity/Teacher';
 
 @Injectable({
   providedIn: 'root'
@@ -54,5 +55,13 @@ export class TeacherService {
    */
   convertBooleanToString(value: boolean) {
     return value ? '1' : '0';
+  }
+
+  /**
+   * 获取当前登录的教师
+   */
+  me(): Observable<Teacher> {
+    const url = 'http://localhost:8080/Teacher/me';
+    return this.httpClient.get<Teacher>(url);
   }
 }

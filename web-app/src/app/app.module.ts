@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpInterceptor} from '@angular/common/http';
 import {TeacherAddComponent} from './teacher/teacher-add.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TeacherEditComponent} from './teacher/teacher-edit.component';
@@ -13,6 +13,8 @@ import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { LoginComponent } from './login/login.component';
+import { PersonalCenterComponent } from './personal-center/personal-center.component';
+import {AuthTokenInterceptor} from './core/auth-token-interceptor';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { LoginComponent } from './login/login.component';
     NavComponent,
     FooterComponent,
     WelcomeComponent,
-    LoginComponent
+    LoginComponent,
+    PersonalCenterComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,9 @@ import { LoginComponent } from './login/login.component';
     RouterModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

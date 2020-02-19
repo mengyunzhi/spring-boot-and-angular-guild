@@ -1,4 +1,5 @@
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
+import {Teacher} from '../../norm/entity/Teacher';
 
 export class TeacherStubService {
   setIsLogin(isLogin: boolean): void {
@@ -7,5 +8,9 @@ export class TeacherStubService {
 
   login(username: string, password: string): Observable<boolean> {
     return null;
+  }
+
+  me(): Observable<Teacher> {
+    return of(new Teacher(1, 'username', 'name'));
   }
 }

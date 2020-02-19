@@ -5,12 +5,17 @@ import {TeacherEditComponent} from './teacher/teacher-edit.component';
 import {TeacherIndexComponent} from './teacher/teacher-index.component';
 import {WelcomeComponent} from './welcome/welcome.component';
 import {LoginComponent} from './login/login.component';
+import {PersonalCenterComponent} from './personal-center/personal-center.component';
 
 
 const routes: Routes = [
   {
     path: '',
     component: WelcomeComponent
+  },
+  {
+    path: 'personalCenter',
+    component: PersonalCenterComponent
   },
   {
     path: 'teacher',
