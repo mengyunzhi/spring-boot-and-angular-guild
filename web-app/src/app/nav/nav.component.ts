@@ -25,6 +25,9 @@ export class NavComponent implements OnInit {
   }
 
   onLogout() {
-    this.teacherService.setIsLogin(false);
+    this.teacherService.logout()
+      .subscribe(() => {
+        this.teacherService.setIsLogin(false);
+      });
   }
 }

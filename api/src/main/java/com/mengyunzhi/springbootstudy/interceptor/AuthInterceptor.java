@@ -38,6 +38,11 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         String method = request.getMethod();
         System.out.println("请求的地址为" + url + "请求的方法为：" + method);
 
+        if( "OPTIONS".equals(method)) {
+            // 请求方法为OPTIONS，不拦截
+            return true;
+        }
+
         // 判断请求地址、方法是否与用户登录相同
         if ("/Teacher/login".equals(url) && "POST".equals(method)) {
             System.out.println("请求地址方法匹配到登录地址，不拦截");

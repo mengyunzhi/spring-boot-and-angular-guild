@@ -40,7 +40,7 @@ describe('TeacherService', () => {
     expect(result).toBeTruthy();
   });
 
-  fit('me', () => {
+  it('me', () => {
     // 获取service实例
     const service: TeacherService = TestBed.get(TeacherService);
 

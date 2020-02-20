@@ -30,7 +30,7 @@ describe('PersonalCenterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('ngOnInit', () => {
+  it('ngOnInit', () => {
     const teacherService = TestBed.get(TeacherService) as TeacherService;
     const mockReturnTeacher = new Teacher(null, null, null);
     spyOn(teacherService, 'me').and.returnValue(of(mockReturnTeacher));

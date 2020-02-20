@@ -5,6 +5,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {FormTest} from '../testing/FormTest';
 import {TestModule} from '../test/test.module';
 import {TeacherService} from '../service/teacher.service';
+import {of} from 'rxjs';
 
 describe('NavComponent', () => {
   let component: NavComponent;
@@ -40,8 +41,10 @@ describe('NavComponent', () => {
   it('onLogout', () => {
     const service = TestBed.get(TeacherService) as TeacherService;
     spyOn(service, 'setIsLogin');
+    spyOn(service, 'logout').and.returnValue(of(null));
 
     component.onLogout();
+    expect(service.logout).toHaveBeenCalled();
     expect(service.setIsLogin).toHaveBeenCalledWith(false);
   });
 });

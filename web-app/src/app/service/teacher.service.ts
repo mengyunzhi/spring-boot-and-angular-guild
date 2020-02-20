@@ -31,6 +31,14 @@ export class TeacherService {
   }
 
   /**
+   * 注销
+   */
+  logout(): Observable<void> {
+    const url = 'http://localhost:8080/Teacher/logout';
+    return this.httpClient.get<void>(url);
+  }
+
+  /**
    * 设置登录状态
    * @param isLogin 登录状态
    */

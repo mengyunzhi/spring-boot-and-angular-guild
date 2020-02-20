@@ -8,19 +8,17 @@ import {Injectable} from '@angular/core';
 })
 export class CacheService {
   /** 认证令牌 */
-  private static authToken: string = undefined;
+  private static authToken: string = sessionStorage.getItem('authToken');
 
   constructor() {
   }
 
   static setAuthToken(token: string) {
     CacheService.authToken = token;
+    sessionStorage.setItem('authToken', token);
   }
 
   static getAuthToken() {
-    if (CacheService.authToken === undefined) {
-      return '';
-    }
     return CacheService.authToken;
   }
 }
