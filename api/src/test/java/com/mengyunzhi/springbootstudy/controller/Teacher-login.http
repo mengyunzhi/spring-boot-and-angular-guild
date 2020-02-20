@@ -1,7 +1,7 @@
 POST http://localhost:8080/Teacher/login
 Content-type: application/json;
-auth-token: 8f03f582-4284-4b4e-85f2-258f30f016c0
 
-{"username": "liuyuxuan", "password":"yunzhi"}
+{"username": "test", "password":"yunzhi"}
 
 ###
+

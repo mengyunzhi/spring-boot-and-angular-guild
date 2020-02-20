@@ -56,6 +56,13 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public boolean isLogin(String authToken) {
+        // 获取authToken映射的teacherId
+        Long teacherId = this.authTokenTeacherIdHashMap.get(authToken);
+        return teacherId != null;
+    }
+
+    @Override
     public Teacher me() {
         // 获取authToken
         String authToken = this.request.getHeader(TokenFilter.TOKEN_KEY);

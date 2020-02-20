@@ -24,6 +24,13 @@ public interface TeacherService {
     void logout();
 
     /**
+     * 判断用户是否登录
+     * @param authToken 认证令牌
+     * @return
+     */
+    boolean isLogin(String authToken);
+
+    /**
      * 我是谁
      * @return 当前登录用户。用户未登录则返回null
      */

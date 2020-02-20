@@ -163,6 +163,7 @@ public class TeacherController {
 
     @GetMapping("me")
     public Teacher me() {
+        System.out.println("用户成功的请求了me方法");
         return this.teacherService.me();
     }
 }
