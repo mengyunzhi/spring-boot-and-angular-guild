@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {TeacherService} from '../service/teacher.service';
 import {TeacherStubService} from './service/teacher-stub.service';
-import { LoginComponent } from './component/login/login.component';
-import { TeacherSelectComponent } from './component/teacher-select/teacher-select.component';
-
+import {LoginComponent} from './component/login/login.component';
+import {TeacherSelectComponent} from './component/teacher-select/teacher-select.component';
+import {TeacherSelectService} from './component/teacher-select/teacher-select.service';
 
 
 @NgModule({
@@ -17,7 +17,9 @@ import { TeacherSelectComponent } from './component/teacher-select/teacher-selec
     TeacherSelectComponent
   ],
   providers: [
-    {provide: TeacherService, useClass: TeacherStubService}
+    {provide: TeacherService, useClass: TeacherStubService},
+    TeacherSelectService
   ]
 })
-export class TestModule { }
+export class TestModule {
+}

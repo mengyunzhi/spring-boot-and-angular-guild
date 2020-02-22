@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Teacher} from '../../../norm/entity/Teacher';
+import {TeacherSelectService} from './teacher-select.service';
 
 @Component({
   selector: 'app-teacher-select',
@@ -6,8 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./teacher-select.component.sass']
 })
 export class TeacherSelectComponent implements OnInit {
+  @Output() selected = new EventEmitter<Teacher>();
+  @Input() teacher: { id: number };
 
-  constructor() { }
+  constructor(private teacherSelectService: TeacherSelectService) {
+    teacherSelectService.selected = this.selected;
+    teacherSelectService.teacher = this.teacher;
+  }
 
   ngOnInit() {
   }

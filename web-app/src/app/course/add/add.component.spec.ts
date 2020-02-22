@@ -5,6 +5,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {TestModule} from '../../test/test.module';
 import {FormTest} from '../../testing/FormTest';
 import {By} from '@angular/platform-browser';
+import {TeacherSelectService} from '../../test/component/teacher-select/teacher-select.service';
+import {Teacher} from '../../norm/entity/Teacher';
 
 
 describe('course -> AddComponent', () => {
@@ -74,5 +76,15 @@ describe('course -> AddComponent', () => {
     spyOn(component, 'onSubmit');
     FormTest.clickButton(fixture, 'button[type="submit"]');
     expect(component.onSubmit).toHaveBeenCalled();
+  });
+
+  fit('嵌入TeacherSelect组件测试', () => {
+    // 获取组件替身的专用服务
+    const teacherSelectService: TeacherSelectService = TestBed.get(TeacherSelectService);
+    const teacher = new Teacher(null, null, null);
+
+    // 服务弹出teacher，断言组件接收到teacher
+    teacherSelectService.selected.emit(teacher);
+    expect(component.course.teacher).toBe(teacher);
   });
 });

@@ -9,7 +9,7 @@
          </div>
       <div class="form-group">
         <label>任课教师</label>
-        <app-teacher-select (selected)="course.teacher"></app-teacher-select>
+        <app-teacher-select (selected)="onTeacherSelect($event)"></app-teacher-select>
       </div>
       <div class="form-group">
         <label>绑定班级</label>
