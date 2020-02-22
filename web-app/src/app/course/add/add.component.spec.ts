@@ -7,7 +7,7 @@ import {FormTest} from '../../testing/FormTest';
 import {By} from '@angular/platform-browser';
 
 
-fdescribe('course -> AddComponent', () => {
+describe('course -> AddComponent', () => {
   let component: AddComponent;
   let fixture: ComponentFixture<AddComponent>;
 
