@@ -78,7 +78,7 @@ describe('course -> AddComponent', () => {
     expect(component.onSubmit).toHaveBeenCalled();
   });
 
-  fit('嵌入TeacherSelect组件测试', () => {
+  it('嵌入TeacherSelect组件测试', () => {
     // 获取组件替身的专用服务
     const teacherSelectService: TeacherSelectService = TestBed.get(TeacherSelectService);
     const teacher = new Teacher(null, null, null);
