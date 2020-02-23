@@ -7,22 +7,41 @@ import {Observable} from 'rxjs';
   styleUrls: ['./multiple-select.component.sass']
 })
 export class MultipleSelectComponent implements OnInit {
+  /** 数据列表 */
   @Input()
-  data: Observable<Array<{name: string}>>;
+  list$: Observable<Array<{ name: string }>>;
 
+  /** 事件弹射器，用户点选后将最终的结点弹射出去 */
   @Output()
-  changed = new EventEmitter<Array<{name: string}>>();
+  changed = new EventEmitter<Array<any>>();
 
-  constructor() { }
-
-  ngOnInit() {
-
+  constructor() {
   }
 
+  /** 用户选择的对象 */
+  selectedObjects = new Array<any>();
+
+  ngOnInit() {
+  }
+
+  /**
+   * 点击某个checkbox后触发的函数
+   * 如果列表中已存在该项，则移除该项
+   * 如果列表中不存在该项，则添加该项
+   */
+  onChange(data: any) {
+    let found = false;
+    this.selectedObjects.forEach((value, index) => {
+      if (data === value) {
+        found = true;
+        this.selectedObjects.splice(index, 1);
+      }
+    });
+
+    if (!found) {
+      this.selectedObjects.push(data);
+    }
+
+    this.changed.emit(this.selectedObjects);
+  }
 }
-
-
-/**
- * 定义class类型
- */
-export type Class = { new(...args: any[]): any; };
