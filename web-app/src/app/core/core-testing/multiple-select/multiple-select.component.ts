@@ -17,9 +17,9 @@ export class MultipleSelectComponent implements OnInit {
   changed = new EventEmitter<Array<any>>();
 
   constructor(private coreTestingController: CoreTestingController) {
+    this.coreTestingController.addUnit(this);
   }
 
   ngOnInit() {
-    this.coreTestingController.addUnit(this);
   }
 }
