@@ -23,7 +23,7 @@ describe('MultipleSelectComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('数据绑定测试', () => {
+  it('数据绑定测试', () => {
     const subject = new Subject<Course[]>();
     component.list$ = subject.asObservable();
     // 由于V层直接使用了异步async管道绑定的观察者

@@ -5,6 +5,9 @@ import {CoreTestingModule} from '../../core/core-testing/core-testing.module';
 import {CoreTestingController} from '../../core/core-testing/core-testing-controller';
 import {MultipleSelectComponent} from '../../core/multiple-select/multiple-select.component';
 import {Klass} from '../../norm/entity/Klass';
+import {KlassService} from '../../service/klass.service';
+import {KlassStubService} from '../../service/klass-stub.service';
+import {of} from 'rxjs';
 
 describe('KlassMultipleSelectComponent', () => {
   let component: KlassMultipleSelectComponent;
@@ -15,6 +18,9 @@ describe('KlassMultipleSelectComponent', () => {
       declarations: [KlassMultipleSelectComponent],
       imports: [
         CoreTestingModule
+      ],
+      providers: [
+        {provide: KlassService, useClass: KlassStubService}
       ]
     })
       .compileComponents();
@@ -42,4 +48,24 @@ describe('KlassMultipleSelectComponent', () => {
     expect(component.onChange).toHaveBeenCalledWith(klasses);
   });
 
+  fit('onChange', () => {
+    let result;
+    component.changed.subscribe((data) => {
+      result = data;
+    });
+
+    const klasses = [new Klass(null, null, null)];
+    component.onChange(klasses);
+    expect(result).toBe(klasses);
+  });
+
+  fit('ngOnInit', () => {
+    const klassService: KlassService = TestBed.get(KlassService);
+    const klasses$ = of([new Klass(null, null, null)]);
+    spyOn(klassService, 'all').and.returnValue(klasses$);
+
+    component.ngOnInit();
+
+    expect(component.klasses$).toBe(klasses$);
+  });
 });
