@@ -16,7 +16,7 @@ describe('KlassService', () => {
     expect(service).toBeTruthy();
   });
 
-  fit('all', () => {
+  it('all', () => {
     // 数据准备，调用被测方法
     const service: KlassService = TestBed.get(KlassService);
     let result;

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Course} from '../../norm/entity/course';
 import {Teacher} from '../../norm/entity/Teacher';
+import {CourseService} from '../../service/course.service';
+import {Klass} from '../../norm/entity/Klass';
 
 @Component({
   selector: 'app-add',
@@ -12,7 +14,8 @@ export class AddComponent implements OnInit {
   formGroup: FormGroup;
   course: Course;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private courseService: CourseService) {
   }
 
   ngOnInit() {
@@ -27,6 +30,12 @@ export class AddComponent implements OnInit {
   }
 
   onSubmit() {
+    this.courseService.save(this.course).subscribe((course) => {
+      console.log(course);
+    });
+  }
 
+  onKlassesChange($event: Klass[]) {
+    this.course.klasses = $event;
   }
 }

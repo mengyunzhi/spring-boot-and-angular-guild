@@ -7,6 +7,14 @@ import {FormTest} from '../../testing/FormTest';
 import {By} from '@angular/platform-browser';
 import {TeacherSelectService} from '../../test/component/teacher-select/teacher-select.service';
 import {Teacher} from '../../norm/entity/Teacher';
+import {Klass} from '../../norm/entity/Klass';
+import {CourseTestingModule} from '../course-testing/course-testing.module';
+import {CourseTestingController} from '../course-testing/course-testing-controller';
+import {KlassMultipleSelectComponent} from '../klass-multiple-select/klass-multiple-select.component';
+import {CourseService} from '../../service/course.service';
+import {CourseStubService} from '../../service/course-stub.service';
+import {Course} from '../../norm/entity/course';
+import {of} from 'rxjs';
 
 
 describe('course -> AddComponent', () => {
@@ -18,7 +26,11 @@ describe('course -> AddComponent', () => {
       declarations: [AddComponent],
       imports: [
         ReactiveFormsModule,
-        TestModule
+        TestModule,
+        CourseTestingModule
+      ],
+      providers: [
+        {provide: CourseService, useClass: CourseStubService}
       ]
     })
       .compileComponents();
@@ -86,5 +98,52 @@ describe('course -> AddComponent', () => {
     // 服务弹出teacher，断言组件接收到teacher
     teacherSelectService.selected.emit(teacher);
     expect(component.course.teacher).toBe(teacher);
+  });
+
+  it('嵌入KlassMultipleSelect组件测试', () => {
+    const courseTestController: CourseTestingController
+      = TestBed.get(CourseTestingController);
+    const klassMultipleSelectComponent: KlassMultipleSelectComponent
+      = courseTestController.get(KlassMultipleSelectComponent);
+    spyOn(component, 'onKlassesChange');
+    const klasses = [new Klass(null, null, null)];
+    klassMultipleSelectComponent.changed.emit(klasses);
+    expect(component.onKlassesChange).toHaveBeenCalledWith(klasses);
+  });
+
+  /**
+   * 在beforeEach的组件初始化代码中。
+   * 当fixture.detectChanges();被首次执行时，会自动执行一次ngOnInit方法
+   */
+  it('ngOnInit', () => {
+    expect(component.formGroup).toBeDefined();
+    expect(component.course).toBeDefined();
+  });
+
+  it('onTeacherSelect', () => {
+    const teacher = new Teacher(null, null, null);
+    component.onTeacherSelect(teacher);
+    expect(component.course.teacher).toBe(teacher);
+  });
+
+  it('onKlassesChange', () => {
+    const klasses = [new Klass(null, null, null)];
+    component.onKlassesChange(klasses);
+    expect(component.course.klasses).toBe(klasses);
+  });
+
+  it('onSubmit', () => {
+    const course = new Course();
+    component.course = course;
+    const courseService: CourseService = TestBed.get(CourseService);
+
+    const returnCourse = new Course();
+    spyOn(courseService, 'save').and.returnValue(of(returnCourse));
+    spyOn(console, 'log');
+
+    component.onSubmit();
+
+    expect(courseService.save).toHaveBeenCalledWith(course);
+    expect(console.log).toHaveBeenCalledWith(returnCourse);
   });
 });

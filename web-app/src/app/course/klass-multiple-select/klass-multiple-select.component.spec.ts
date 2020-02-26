@@ -37,7 +37,7 @@ describe('KlassMultipleSelectComponent', () => {
 
   });
 
-  fit('嵌套组件MultipleSelectComponent测试', () => {
+  it('嵌套组件MultipleSelectComponent测试', () => {
     const coreTestingController = TestBed.get(CoreTestingController);
     const multipleSelect = coreTestingController.get(MultipleSelectComponent) as MultipleSelectComponent;
     expect(multipleSelect.list$).toBe(component.klasses$);
@@ -48,7 +48,7 @@ describe('KlassMultipleSelectComponent', () => {
     expect(component.onChange).toHaveBeenCalledWith(klasses);
   });
 
-  fit('onChange', () => {
+  it('onChange', () => {
     let result;
     component.changed.subscribe((data) => {
       result = data;
@@ -59,7 +59,7 @@ describe('KlassMultipleSelectComponent', () => {
     expect(result).toBe(klasses);
   });
 
-  fit('ngOnInit', () => {
+  it('ngOnInit', () => {
     const klassService: KlassService = TestBed.get(KlassService);
     const klasses$ = of([new Klass(null, null, null)]);
     spyOn(klassService, 'all').and.returnValue(klasses$);

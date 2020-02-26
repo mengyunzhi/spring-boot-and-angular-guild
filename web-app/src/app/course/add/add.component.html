@@ -14,8 +14,7 @@
       <div class="form-group">
         <label>绑定班级</label>
         <div>
-          <label><input type="checkbox"> 班级1</label>
-          <label><input type="checkbox"> 班级2</label>
+          <app-klass-multiple-select (changed)="onKlassesChange($event)"></app-klass-multiple-select>
         </div>
       </div>
       <div class="form-group">
