@@ -1,5 +1,5 @@
 import {Course} from '../norm/entity/course';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 export class CourseStubService {
 
@@ -8,5 +8,9 @@ export class CourseStubService {
 
   save(course: Course): Observable<Course> {
     return null;
+  }
+
+  existsByName(name: string): Observable<boolean> {
+    return of(false);
   }
 }

@@ -4,6 +4,7 @@ import {Course} from '../../norm/entity/course';
 import {Teacher} from '../../norm/entity/Teacher';
 import {CourseService} from '../../service/course.service';
 import {Klass} from '../../norm/entity/Klass';
+import {UniqueNameValidator} from '../validator/unique-name-validator';
 
 @Component({
   selector: 'app-add',
@@ -15,12 +16,14 @@ export class AddComponent implements OnInit {
   course: Course;
 
   constructor(private formBuilder: FormBuilder,
-              private courseService: CourseService) {
+              private courseService: CourseService,
+              private uniqueNameValidator: UniqueNameValidator) {
   }
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
-      name: ['', [Validators.minLength(2), Validators.required]]
+      name: ['', [Validators.minLength(2), Validators.required],
+        this.uniqueNameValidator.validate]
     });
     this.course = new Course();
   }

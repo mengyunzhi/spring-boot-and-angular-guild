@@ -1,18 +1,14 @@
 package com.mengyunzhi.springbootstudy.interceptor;
 
-import com.mengyunzhi.springbootstudy.entity.Teacher;
 import com.mengyunzhi.springbootstudy.filter.TokenFilter;
 import com.mengyunzhi.springbootstudy.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import sun.net.httpserver.AuthFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
