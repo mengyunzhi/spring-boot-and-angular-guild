@@ -133,6 +133,7 @@ describe('course -> AddComponent', () => {
   });
 
   it('onSubmit', () => {
+    component.formGroup.get('name').setValue('test');
     const course = new Course();
     component.course = course;
     const courseService: CourseService = TestBed.get(CourseService);
@@ -145,5 +146,6 @@ describe('course -> AddComponent', () => {
 
     expect(courseService.save).toHaveBeenCalledWith(course);
     expect(console.log).toHaveBeenCalledWith(returnCourse);
+    expect(course.name).toEqual('test');
   });
 });

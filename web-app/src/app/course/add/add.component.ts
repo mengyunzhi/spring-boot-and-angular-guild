@@ -30,6 +30,7 @@ export class AddComponent implements OnInit {
   }
 
   onSubmit() {
+    this.course.name = this.formGroup.get('name').value;
     this.courseService.save(this.course).subscribe((course) => {
       console.log(course);
     });
