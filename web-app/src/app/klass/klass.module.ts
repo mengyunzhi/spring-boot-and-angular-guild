@@ -17,6 +17,9 @@ import {KlassRoutingModule} from './klass-routing.module';
     FormsModule,
     ReactiveFormsModule,
     KlassRoutingModule
+  ],
+  exports: [
+    TeacherSelectComponent
   ]
 })
 export class KlassModule {

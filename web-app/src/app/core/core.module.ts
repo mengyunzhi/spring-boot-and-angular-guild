@@ -12,7 +12,8 @@ import { MultipleSelectComponent } from './multiple-select/multiple-select.compo
     ReactiveFormsModule
   ],
   exports: [
-    SelectComponent
+    SelectComponent,
+    MultipleSelectComponent
   ]
 })
 export class CoreModule {
