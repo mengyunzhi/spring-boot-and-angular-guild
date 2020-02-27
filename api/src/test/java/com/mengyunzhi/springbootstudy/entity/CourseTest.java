@@ -1,6 +1,7 @@
 package com.mengyunzhi.springbootstudy.entity;
 
 import com.mengyunzhi.springbootstudy.repository.CourseRepository;
+import com.mengyunzhi.springbootstudy.repository.KlassRepository;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -17,17 +19,30 @@ public class CourseTest {
     @Autowired
     CourseRepository courseRepository;
 
+    @Autowired
+    KlassRepository klassRepository;
+
     private Course course;
 
     @Before
     public void before() {
         this.course = new Course();
         this.course.setName(RandomString.make(4));
+
+        for (int i = 0; i < 2; i++) {
+            Klass klass = new Klass();
+            klass.setName(RandomString.make(4));
+            klassRepository.save(klass);
+            this.course.getKlasses().add(klass);
+        }
     }
 
     @Test
+    @Transactional
     public void save() {
         this.courseRepository.save(this.course);
+        Course course = this.courseRepository.findById(this.course.getId()).get();
+        course.getKlasses();
     }
 
     @Test
@@ -78,5 +93,26 @@ public class CourseTest {
             this.course.setName(RandomString.make(i));
             this.courseRepository.save(this.course);
         }
+    }
+
+    @Test
+    public void manyToManyUpdate() {
+        // 保存原课程
+        this.courseRepository.save(this.course);
+
+        // 新建班级
+        Klass klass = new Klass();
+        klass.setName(RandomString.make(6));
+        klassRepository.save(klass);
+
+        // 删除已存在的一个班级，新增新班级后更新
+        this.course.getKlasses().remove(0);
+        this.course.getKlasses().add(klass);
+        this.courseRepository.save(course);
+    }
+
+    @Test
+    public void manyToManyDelete() {
+
     }
 }

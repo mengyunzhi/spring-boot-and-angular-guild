@@ -1,6 +1,8 @@
 package com.mengyunzhi.springbootstudy.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 课程
@@ -18,6 +20,9 @@ public class Course {
 
     @ManyToOne
     private Teacher teacher;
+
+    @ManyToMany
+    private List<Klass> klasses = new ArrayList<>();
 
     public Course() {
     }
@@ -44,5 +49,13 @@ public class Course {
 
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
+    }
+
+    public List<Klass> getKlasses() {
+        return klasses;
+    }
+
+    public void setKlasses(List<Klass> klasses) {
+        this.klasses = klasses;
     }
 }
