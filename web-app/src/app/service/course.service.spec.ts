@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { CourseService } from './course.service';
+import {CourseService} from './course.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {Course} from '../norm/entity/course';
 
@@ -38,4 +38,19 @@ describe('CourseService', () => {
     request.flush(returnCourse);
     expect(returnCourse).toBe(result);
   });
+
+  it('existsByName', () => {
+    const service: CourseService = TestBed.get(CourseService);
+    const name = 'test';
+    let result;
+    service.existsByName(name).subscribe((data) => {
+      result = data;
+    });
+
+    const testController = TestBed.get(HttpTestingController) as HttpTestingController;
+    const request = testController.expectOne(req => req.url === 'http://localhost:8080/Course/existsByName');
+    expect(request.request.params.get('name')).toEqual('test');
+    expect(request.request.method).toEqual('GET');
+  });
+
 });
