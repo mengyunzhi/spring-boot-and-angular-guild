@@ -19,6 +19,9 @@ export class CacheService {
   }
 
   static getAuthToken() {
+    if (CacheService.authToken === null) {
+      return '';
+    }
     return CacheService.authToken;
   }
 }
