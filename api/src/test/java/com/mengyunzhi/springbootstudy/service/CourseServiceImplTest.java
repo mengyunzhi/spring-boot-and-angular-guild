@@ -2,6 +2,7 @@ package com.mengyunzhi.springbootstudy.service;
 
 import com.mengyunzhi.springbootstudy.entity.Course;
 import com.mengyunzhi.springbootstudy.repository.CourseRepository;
+import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -25,5 +26,14 @@ public class CourseServiceImplTest {
 
         Course resultCourse = this.courseService.save(course);
         Assert.assertEquals(returnCourse, resultCourse);
+    }
+
+    @Test
+    public void existsByName() {
+        String name = RandomString.make(10);
+        Mockito.when(this.courseRepository.existsByName(name)).thenReturn(false);
+
+        boolean result = this.courseService.existsByName(name);
+        Assert.assertFalse(result);
     }
 }

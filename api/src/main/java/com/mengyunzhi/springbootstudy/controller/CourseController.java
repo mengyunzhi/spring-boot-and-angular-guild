@@ -17,4 +17,9 @@ public class CourseController {
     public Course save(@RequestBody Course course) {
         return this.courseService.save(course);
     }
+
+    @GetMapping("existsByName")
+    public boolean existsByName(@RequestParam String name) {
+        return this.courseService.existsByName(name);
+    }
 }

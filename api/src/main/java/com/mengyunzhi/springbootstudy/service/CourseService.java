@@ -13,4 +13,11 @@ public interface CourseService {
      * @return 课程
      */
     Course save(Course course);
+
+    /**
+     * 名称是否存在
+     * @param name 课程名称
+     * @return true 存在
+     */
+    boolean existsByName(String name);
 }

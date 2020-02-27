@@ -66,14 +66,27 @@ public class CourseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(jsonObject.toString())
         ).andExpect(MockMvcResultMatchers.status().is(201))
-        .andExpect(MockMvcResultMatchers.jsonPath("id").value(returnCourse.getId()))
-        .andExpect(MockMvcResultMatchers.jsonPath("name").value(returnCourse.getName()))
-        .andExpect(MockMvcResultMatchers.jsonPath("teacher.id").value(returnCourse.getTeacher().getId()))
-        .andExpect(MockMvcResultMatchers.jsonPath("teacher.name").value(returnCourse.getTeacher().getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(returnCourse.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("name").value(returnCourse.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("teacher.id").value(returnCourse.getTeacher().getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("teacher.name").value(returnCourse.getTeacher().getName()))
         ;
 
         ArgumentCaptor<Course> courseArgumentCaptor = ArgumentCaptor.forClass(Course.class);
         Mockito.verify(this.courseService).save(courseArgumentCaptor.capture());
         Assert.assertEquals(courseArgumentCaptor.getValue().getName(), name);
+    }
+
+    @Test
+    public void existsByName() throws Exception {
+        String name = RandomString.make(4);
+        String url = "/Course/existsByName";
+        Mockito.when(this.courseService.existsByName(Mockito.eq(name))).thenReturn(false);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get(url)
+                .param("name", name))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.content().string("false"))
+        ;
     }
 }

@@ -18,4 +18,9 @@ public class CourseServiceImpl implements CourseService {
     public Course save(Course course) {
         return this.courseRepository.save(course);
     }
+
+    @Override
+    public boolean existsByName(String name) {
+        return this.courseRepository.existsByName(name);
+    }
 }
