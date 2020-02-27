@@ -7,6 +7,8 @@
         <input type="text" class="form-control" id="name"
                placeholder="名称" formControlName="name" required>
          </div>
+        <small id="nameRequired" *ngIf="formGroup.get('name').dirty && formGroup.get('name').errors && formGroup.get('name').errors.required" class="form-text text-danger">请输入课程名</small>
+        <small id="nameMinLength" *ngIf="formGroup.get('name').errors && formGroup.get('name').errors.minlength" class="form-text text-danger">课程名称不得少于2个字符</small>
       <div class="form-group">
         <label>任课教师</label>
         <app-teacher-select (selected)="course.teacher"></app-teacher-select>
